@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Scriptor</string>
+    <string name="tagline">In your own words. For life.</string>
+
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="write_here">Write here…</string>
+
+    <string name="tab_desk">Desk</string>
+    <string name="tab_library">Library</string>
+    <string name="tab_chronicle">Chronicle</string>
+
+    <!-- Canonical hours -->
+    <string name="hour_matins">Matins</string>
+    <string name="hour_prime">Prime</string>
+    <string name="hour_terce">Terce</string>
+    <string name="hour_sext">Sext</string>
+    <string name="hour_none">None</string>
+    <string name="hour_vespers">Vespers</string>
+    <string name="hour_compline">Compline</string>
+    <string name="matins">Matins</string>
+    <string name="compline">Compline</string>
+    <plurals name="matins_text">
+        <item quantity="one">Recall the page you wrote yesterday, before you look at it.</item>
+        <item quantity="other">Recall the %d pages you wrote yesterday, before you look at them.</item>
+    </plurals>
+    <plurals name="compline_text">
+        <item quantity="one">%1$d page is fading. Restore it before sleep: that\'s when memory sets.</item>
+        <item quantity="other">%1$d pages are fading. Restore %2$d before sleep: that\'s when memory sets.</item>
+    </plurals>
+    <string name="channel_hours">Matins and Compline</string>
+    <string name="channel_hours_desc">A morning bell for yesterday\'s pages and an evening one for the fading ones</string>
+
+    <!-- Desk -->
+    <plurals name="fading">
+        <item quantity="one">%d page is fading</item>
+        <item quantity="other">%d pages are fading</item>
+    </plurals>
+    <string name="fading_hint">Write them again from memory and the ink comes back.</string>
+    <string name="fading_none">All the ink is fresh</string>
+    <string name="fading_next">The next page starts to fade %s.</string>
+    <string name="fading_all_gold">Every page is gilded.</string>
+    <string name="restore_all">Restore from memory</string>
+    <string name="restore_compline">Just %d before sleep</string>
+    <string name="errata_title">Book of errors</string>
+    <plurals name="errata_text">
+        <item quantity="one">%d page you were sure of and forgot. Put right, it sticks best of all.</item>
+        <item quantity="other">%d pages you were sure of and forgot. Put right, they stick best of all.</item>
+    </plurals>
+    <string name="errata_intro">Here is what you staked three candles on and still forgot. A confident mistake, once corrected, is remembered better than anything else.</string>
+    <string name="errata_empty">Empty. Your eye is true.</string>
+    <string name="errata_restore">Correct them</string>
+    <string name="desk_open">Open on the desk</string>
+    <string name="desk_none_open">No codex is open. Start a new one.</string>
+    <string name="desk_recent">Lately written</string>
+    <string name="write_page">Write a page</string>
+    <string name="write_page_short">Page</string>
+    <string name="new_codex">New codex</string>
+    <string name="empty_title">The desk is bare</string>
+    <string name="empty_text">Read a chapter, watch a lecture, listen to a podcast. Then close it and write what you understood in your own words. That page is where it starts.</string>
+    <plurals name="pages">
+        <item quantity="one">%d page</item>
+        <item quantity="other">%d pages</item>
+    </plurals>
+
+    <!-- Library -->
+    <string name="library_title">Library</string>
+    <string name="library_sub">The leather pales as the ink inside it fades.</string>
+    <string name="library_open">On the shelf</string>
+    <string name="library_closed">Closed and sealed</string>
+
+    <!-- Codex -->
+    <string name="kind_book">Book</string>
+    <string name="kind_video">Video</string>
+    <string name="kind_article">Article</string>
+    <string name="kind_podcast">Podcast</string>
+    <string name="kind_lecture">Lecture</string>
+    <string name="kind_course">Course</string>
+    <string name="codex_new_title">New codex</string>
+    <string name="codex_edit_title">The codex</string>
+    <string name="codex_kind">What are you studying?</string>
+    <string name="codex_title_label">Title</string>
+    <string name="codex_title_hint">Title</string>
+    <string name="codex_author_hint">Author, channel, teacher</string>
+    <string name="codex_binding">Binding</string>
+    <string name="codex_create">Bind the codex</string>
+    <string name="preface">Preface</string>
+    <string name="preface_hint">Before you start: what do you already know about this, and what do you expect? Even wrong guesses help you remember: you\'ll see where you were mistaken.</string>
+    <string name="preface_placeholder">I think it\'s about…</string>
+    <string name="questions">Questions to the source</string>
+    <string name="questions_hint">Up to three questions you want answered, one per line. Read in search of them.</string>
+    <string name="questions_placeholder">Why does…\nHow do I…</string>
+    <string name="begun">begun %s</string>
+    <string name="ink_left">ink %s</string>
+    <string name="codex_no_pages">No pages yet. After a chapter or a part, close the source and write a page.</string>
+    <string name="restore_codex">Restore all</string>
+    <string name="close_codex">Close the codex</string>
+    <string name="codex_delete_title">Delete the codex?</string>
+    <plurals name="codex_delete_text">
+        <item quantity="one">Its %d page and everything on its margins will be gone.</item>
+        <item quantity="other">Its %d pages and everything on their margins will be gone.</item>
+    </plurals>
+    <string name="colophon_of_codex">The whole of it</string>
+    <string name="surprise_label">Not as I thought</string>
+
+    <!-- Closing -->
+    <string name="close_title">Closing the codex</string>
+    <string name="close_intro">To close a codex is to press it down to its essence. What you can say in a sentence, you have understood.</string>
+    <string name="close_sentence">In one sentence</string>
+    <string name="close_sentence_hint">This is about…</string>
+    <string name="close_words">In three words</string>
+    <string name="close_words_hint">Tooled on the spine</string>
+    <string name="close_words_more">Three words, no more: that\'s the point.</string>
+    <string name="close_surprise">What turned out otherwise?</string>
+    <string name="close_you_wrote">In the preface you wrote:</string>
+    <string name="close_surprise_hint">I thought… but it turned out…</string>
+    <string name="close_open_questions">Questions still without an answer: %d</string>
+    <string name="close_do">Close and seal</string>
+
+    <!-- Writing a page -->
+    <string name="page_new_title">A new page</string>
+    <string name="page_edit_title">The page</string>
+    <string name="page_rule">Close the source. Write from memory, in your own words. Leaving things out is fine: you\'ll see the gaps later.</string>
+    <string name="page_title_hint">What is this page about</string>
+    <string name="locator_book">Chapter or page</string>
+    <string name="locator_time">Timecode, e.g. 12:40</string>
+    <string name="locator_article">Section</string>
+    <string name="locator_course">Lesson</string>
+    <string name="page_body">In my own words</string>
+    <string name="page_body_hint">As if telling a friend over dinner…</string>
+    <string name="page_borrowed">That was the author\'s ink: it went into the quotation below. The page is for your own words.</string>
+    <string name="page_quote">The author\'s words</string>
+    <string name="page_quote_hint">A quotation worth keeping</string>
+    <string name="page_cues">Questions on the margin</string>
+    <string name="page_cues_hint">Questions your text answers, one per line. Later you\'ll see only these and answer from memory.</string>
+    <string name="page_cues_placeholder">Why does…\nWhat happens if…</string>
+    <string name="page_gold">The golden line</string>
+    <string name="page_gold_hint">The very essence, a line at most. Laid in gold.</string>
+    <string name="page_gold_placeholder">The main thing is…</string>
+    <string name="page_colophon">Colophon</string>
+    <string name="page_colophon_hint">One or two sentences to sum it up, at the foot of the page.</string>
+    <string name="page_colophon_placeholder">In short…</string>
+    <string name="page_bind">Bind the page</string>
+    <string name="voice">Aloud</string>
+    <string name="voice_prompt">Tell it in your own words</string>
+
+    <!-- A page -->
+    <string name="ink_status">Ink %1$s · fades %2$s</string>
+    <string name="ink_fading">Ink %s · fading now</string>
+    <string name="ink_gold">Gold leaf: this page no longer fades</string>
+    <string name="restore_page">Restore from memory</string>
+    <string name="explain_novice">Explain to the novice</string>
+    <string name="margins">On the margins</string>
+    <string name="margins_hint">The more roads lead to an idea, the easier it is to find.</string>
+    <string name="gloss_novice">The novice asked</string>
+    <string name="gloss_exemplum">Example of my own</string>
+    <string name="gloss_parable">Parable</string>
+    <string name="gloss_dissent">Dispute with the author</string>
+    <string name="gloss_seal">Seal of practice</string>
+    <string name="exemplum_hint">Where have you seen this yourself? Not from the book: from your own life.</string>
+    <string name="parable_hint">What is it like? Explain it through something quite different.</string>
+    <string name="dissent_hint">What do you disagree with? Where is the author wrong, or what did they miss?</string>
+    <string name="seal_hint">You put this to use. What did you do, and what came of it?</string>
+    <string name="gloss_delete">Erase from the margin?</string>
+    <string name="palimpsest">Palimpsest</string>
+    <string name="palimpsest_hint">Each restoration is a layer written over the page.</string>
+    <string name="page_delete_title">Cut out the page?</string>
+    <string name="page_delete_text">The page, its margins and its restorations will be gone.</string>
+
+    <!-- The novice -->
+    <string name="novice_title">The novice</string>
+    <string name="novice_about">about “%s”</string>
+    <string name="novice_rule">Explain it simply, without looking at the page. Where the words don\'t come is where understanding is thin.</string>
+    <string name="novice_answer_hint">You see, it\'s like this…</string>
+    <string name="novice_answer">Explain</string>
+    <string name="novice_other">Another question</string>
+    <string name="novice_peek">Peek</string>
+    <string name="novice_hide">Hide the page</string>
+    <string name="novice_thanks">Now I understand! Thank you, brother.</string>
+    <string name="novice_more">He has another question</string>
+    <string name="novice_done">I\'ve asked everything I wanted. You explain well!</string>
+    <string-array name="novice_questions">
+        <item>Why is it so?</item>
+        <item>Can you give an example from life?</item>
+        <item>How would you explain it to a child of ten?</item>
+        <item>What would happen if it weren\'t true?</item>
+        <item>What does it argue against?</item>
+        <item>Where doesn\'t it work?</item>
+        <item>What is it like? What else works the same way?</item>
+        <item>Why should I care about it?</item>
+        <item>What follows from it?</item>
+        <item>How does it connect with what you knew before?</item>
+        <item>What is the most important word here, and why?</item>
+        <item>What do people usually get wrong about it?</item>
+        <item>How would you check that it\'s true?</item>
+        <item>What would you do differently tomorrow because of it?</item>
+        <item>Can you say it in one sentence?</item>
+        <item>What is still unclear to you yourself?</item>
+    </string-array>
+
+    <!-- Restoring -->
+    <string name="restore_title">Restoration</string>
+    <string name="restore_progress">Page %1$d of %2$d</string>
+    <string name="mode_recall">from memory</string>
+    <string name="mode_lacunae">lacunae</string>
+    <string name="mode_cues">the margin</string>
+    <string name="restore_task">The task</string>
+    <string name="ask_recall">The page has faded. Write down everything you remember of it, without looking. Or tell it aloud.</string>
+    <string name="ask_cues">Answer the questions on the margin: in writing, aloud, or in your head.</string>
+    <string name="ask_lacunae">The mice have eaten some words. Say to yourself what was there.</string>
+    <string name="recall_hint">What I remember…</string>
+    <string name="cues_hint">My answers… (or answer in your head)</string>
+    <string name="restore_compare">Compare</string>
+    <string name="restore_in_head">I\'ve recalled it in my head</string>
+    <string name="stake_title">Stake your candles</string>
+    <string name="stake_hint">Before you look: how sure are you that you remembered it right?</string>
+    <string name="stake_1">Not sure</string>
+    <string name="stake_2">Fairly</string>
+    <string name="stake_3">Certain</string>
+    <string name="stake_3_note">Three candles: if you forgot after all, the page goes into the book of errors. Confident mistakes, corrected, stick best.</string>
+    <string name="coverage">You caught %s of the page</string>
+    <string name="grade_title">How did it go?</string>
+    <string name="grade_again">Forgot</string>
+    <string name="grade_hard">Hard</string>
+    <string name="grade_good">Remembered</string>
+    <string name="grade_easy">Easy</string>
+    <string name="span_today">today</string>
+    <string name="span_tomorrow">tomorrow</string>
+    <plurals name="span_days">
+        <item quantity="one">in %d day</item>
+        <item quantity="other">in %d days</item>
+    </plurals>
+    <plurals name="span_months">
+        <item quantity="one">in %d month</item>
+        <item quantity="other">in %d months</item>
+    </plurals>
+    <plurals name="span_years">
+        <item quantity="one">in %d year</item>
+        <item quantity="other">in %d years</item>
+    </plurals>
+    <plurals name="restored">
+        <item quantity="one">%d page restored</item>
+        <item quantity="other">%d pages restored</item>
+    </plurals>
+    <string name="restore_done_text">The candles are out. The ink is darker than it was.</string>
+    <string name="restore_nothing">Nothing to restore</string>
+    <string name="restore_nothing_text">All the ink here is fresh.</string>
+    <string name="restore_errata_note">A confident mistake went into the book of errors. Put it right soon and it will hold better than the rest.</string>
+
+    <!-- Chronicle -->
+    <string name="chronicle_title">Chronicle</string>
+    <string name="chronicle_sub">What is written, and how it holds.</string>
+    <string name="chronicle_empty">The chronicle fills as you write and restore.</string>
+    <string name="stat_codices">codices</string>
+    <string name="stat_pages">pages</string>
+    <string name="stat_restored">restorations</string>
+    <string name="stat_days">days in a row</string>
+    <string name="ink_state">The ink</string>
+    <string name="ink_fresh">Fresh</string>
+    <string name="ink_fading_state">Fading</string>
+    <string name="ink_faint">Faint</string>
+    <string name="ink_gilded">Gilded</string>
+    <string name="eye_title">The scribe\'s eye</string>
+    <string name="eye_hint">How often you were right when you staked one, two or three candles. The dashed mark is where a true eye lands.</string>
+    <string name="eye_empty">Stake candles on a few restorations and your eye will show here.</string>
+    <string name="eye_oversure">You are surer than you are right. Stake three candles only when you could explain it to the novice.</string>
+    <string name="eye_undersure">You know more than you think. Trust yourself a little more.</string>
+    <string name="eye_true">Your eye is true: you know what you know.</string>
+    <plurals name="eye_count">
+        <item quantity="one">from %d staked restoration</item>
+        <item quantity="other">from %d staked restorations</item>
+    </plurals>
+    <string name="golden_pages">Gilded pages</string>
+    <string name="sealed_pages">Sealed by practice</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="set_hours">The hours</string>
+    <string name="set_hours_hint">Two bells a day, and only when there is something to do.</string>
+    <string name="set_matins_hint">Morning: recall what you wrote yesterday</string>
+    <string name="set_compline_hint">Before sleep: restore a few fading pages</string>
+    <string name="set_at">Rings at</string>
+    <string name="set_compline_size">Pages at Compline</string>
+    <string name="set_retention">How firmly to remember</string>
+    <string name="set_retention_hint">A page is due when the chance of recalling it drops below this. Stricter means more often.</string>
+    <string name="retention_light">85%</string>
+    <string name="retention_usual">90%</string>
+    <string name="retention_strict">95%</string>
+    <string name="set_language">Language</string>
+    <string name="lang_system">System</string>
+    <string name="set_backup">Backup</string>
+    <string name="set_backup_hint">Everything is kept on this phone only. Save a copy now and then.</string>
+    <string name="backup_export">Save a copy</string>
+    <string name="backup_export_hint">One JSON file</string>
+    <string name="backup_import">Restore from a copy</string>
+    <string name="backup_import_hint">Replaces everything here</string>
+    <string name="backup_import_confirm">Everything in the app now will be replaced with the copy.</string>
+    <string name="backup_import_do">Replace</string>
+    <string name="backup_done">Copy saved</string>
+    <string name="backup_failed">Couldn\'t save the copy</string>
+    <string name="backup_restored">Restored from the copy</string>
+    <string name="backup_bad">That isn\'t a Scriptor copy</string>
+    <string name="about">Scriptor %s · part of Stillcraft</string>
+
+    <!-- Welcome -->
+    <string name="welcome_1_title">A scriptorium for what you learn</string>
+    <string name="welcome_1_text">After a book, a lecture or a video, write what you understood in your own words. That alone makes much more of it stay.</string>
+    <string name="welcome_2_title">Ink fades like memory</string>
+    <string name="welcome_2_text">Each page fades along your own forgetting curve. Write it again from memory, and the ink turns black again and holds longer.</string>
+    <string name="welcome_ink_1">Spacing beats cramming.</string>
+    <string name="welcome_ink_2">Recall is the practice.</string>
+    <string name="welcome_ink_3">Own words, own idea.</string>
+    <string name="welcome_3_title">The page blooms as you understand</string>
+    <string name="welcome_3_text">Answer the novice, find examples from your life, argue with the author: the page earns an initial, vines, gold leaf and a seal.</string>
+    <string name="welcome_start">Begin the first codex</string>
+</resources>

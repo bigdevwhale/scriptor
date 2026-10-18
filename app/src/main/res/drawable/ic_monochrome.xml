@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The quill, centred in the adaptive icon's safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <group android:translateX="30" android:translateY="30">
+        <path android:fillColor="#FFFFFFFF"
+            android:pathData="M41,5C28,6 19,15 15.2,26.4L12.4,34.8L8.4,42.6L10.2,43.6L14.4,36.6L21.2,35.2C32,32.4 40,21.6 41,5ZM18.8,31.6L16.6,32L18.2,27.6C20.6,21.2 24.8,15.6 30.6,11.8C26.4,17.4 22.8,24.2 18.8,31.6Z" />
+    </group>
+</vector>

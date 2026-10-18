@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">Своими словами. На всю жизнь.</string>
+
+    <string name="back">Назад</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+    <string name="next">Дальше</string>
+    <string name="done">Готово</string>
+    <string name="edit">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="write_here">Пиши здесь…</string>
+
+    <string name="tab_desk">Стол</string>
+    <string name="tab_library">Библиотека</string>
+    <string name="tab_chronicle">Летопись</string>
+
+    <!-- Canonical hours -->
+    <string name="hour_matins">Утреня</string>
+    <string name="hour_prime">Час первый</string>
+    <string name="hour_terce">Час третий</string>
+    <string name="hour_sext">Час шестой</string>
+    <string name="hour_none">Час девятый</string>
+    <string name="hour_vespers">Вечерня</string>
+    <string name="hour_compline">Повечерие</string>
+    <string name="matins">Утреня</string>
+    <string name="compline">Повечерие</string>
+    <plurals name="matins_text">
+        <item quantity="one">Вспомни %d страницу, которую написал вчера, — прежде чем заглянуть в неё.</item>
+        <item quantity="few">Вспомни %d страницы, которые написал вчера, — прежде чем заглянуть в них.</item>
+        <item quantity="many">Вспомни %d страниц, которые написал вчера, — прежде чем заглянуть в них.</item>
+        <item quantity="other">Вспомни %d страницы, которые написал вчера, — прежде чем заглянуть в них.</item>
+    </plurals>
+    <plurals name="compline_text">
+        <item quantity="one">Выцветает %1$d страница. Восстанови её перед сном — так память закрепляется лучше всего.</item>
+        <item quantity="few">Выцветают %1$d страницы. Восстанови %2$d перед сном — так память закрепляется лучше всего.</item>
+        <item quantity="many">Выцветают %1$d страниц. Восстанови %2$d перед сном — так память закрепляется лучше всего.</item>
+        <item quantity="other">Выцветают %1$d страницы. Восстанови %2$d перед сном — так память закрепляется лучше всего.</item>
+    </plurals>
+    <string name="channel_hours">Утреня и Повечерие</string>
+    <string name="channel_hours_desc">Утренний колокол для вчерашних страниц и вечерний — для выцветающих</string>
+
+    <!-- Desk -->
+    <plurals name="fading">
+        <item quantity="one">Выцветает %d страница</item>
+        <item quantity="few">Выцветают %d страницы</item>
+        <item quantity="many">Выцветают %d страниц</item>
+        <item quantity="other">Выцветают %d страницы</item>
+    </plurals>
+    <string name="fading_hint">Перепиши их по памяти — и чернила вернутся.</string>
+    <string name="fading_none">Все чернила свежие</string>
+    <string name="fading_next">Следующая страница начнёт выцветать %s.</string>
+    <string name="fading_all_gold">Все страницы позолочены.</string>
+    <string name="restore_all">Восстановить по памяти</string>
+    <string name="restore_compline">Только %d перед сном</string>
+    <string name="errata_title">Книга ошибок</string>
+    <plurals name="errata_text">
+        <item quantity="one">%d страница, в которой ты был уверен — и забыл. Исправленная, она запомнится крепче всех.</item>
+        <item quantity="few">%d страницы, в которых ты был уверен — и забыл. Исправленные, они запомнятся крепче всех.</item>
+        <item quantity="many">%d страниц, в которых ты был уверен — и забыл. Исправленные, они запомнятся крепче всех.</item>
+        <item quantity="other">%d страницы, в которых ты был уверен — и забыл. Исправленные, они запомнятся крепче всех.</item>
+    </plurals>
+    <string name="errata_intro">Здесь то, на что ты поставил три свечи — и всё же забыл. Уверенная ошибка, когда её исправишь, запоминается лучше всего остального.</string>
+    <string name="errata_empty">Пусто. Глаз у тебя верный.</string>
+    <string name="errata_restore">Исправить</string>
+    <string name="desk_open">Раскрыты на столе</string>
+    <string name="desk_none_open">Открытых рукописей нет. Начни новую.</string>
+    <string name="desk_recent">Недавно написано</string>
+    <string name="write_page">Написать страницу</string>
+    <string name="write_page_short">Страница</string>
+    <string name="new_codex">Новая рукопись</string>
+    <string name="empty_title">Стол пуст</string>
+    <string name="empty_text">Прочитай главу, посмотри лекцию, послушай подкаст. Потом закрой и напиши, что понял, своими словами. С этой страницы всё и начинается.</string>
+    <plurals name="pages">
+        <item quantity="one">%d страница</item>
+        <item quantity="few">%d страницы</item>
+        <item quantity="many">%d страниц</item>
+        <item quantity="other">%d страницы</item>
+    </plurals>
+
+    <!-- Library -->
+    <string name="library_title">Библиотека</string>
+    <string name="library_sub">Кожа бледнеет, когда выцветают чернила внутри.</string>
+    <string name="library_open">На полке</string>
+    <string name="library_closed">Закрыты и запечатаны</string>
+
+    <!-- Codex -->
+    <string name="kind_book">Книга</string>
+    <string name="kind_video">Видео</string>
+    <string name="kind_article">Статья</string>
+    <string name="kind_podcast">Подкаст</string>
+    <string name="kind_lecture">Лекция</string>
+    <string name="kind_course">Курс</string>
+    <string name="codex_new_title">Новая рукопись</string>
+    <string name="codex_edit_title">Рукопись</string>
+    <string name="codex_kind">Что изучаешь?</string>
+    <string name="codex_title_label">Название</string>
+    <string name="codex_title_hint">Название</string>
+    <string name="codex_author_hint">Автор, канал, преподаватель</string>
+    <string name="codex_binding">Переплёт</string>
+    <string name="codex_create">Переплести рукопись</string>
+    <string name="preface">Предисловие</string>
+    <string name="preface_hint">Перед началом: что ты уже знаешь об этом и чего ждёшь? Даже неверные догадки помогают запомнить — потом увидишь, где ошибался.</string>
+    <string name="preface_placeholder">Думаю, это о том, что…</string>
+    <string name="questions">Вопросы к источнику</string>
+    <string name="questions_hint">До трёх вопросов, на которые хочешь получить ответ, по одному в строке. Читай в поисках ответов.</string>
+    <string name="questions_placeholder">Почему…\nКак мне…</string>
+    <string name="begun">начата %s</string>
+    <string name="ink_left">чернила %s</string>
+    <string name="codex_no_pages">Страниц пока нет. После главы или части закрой источник и напиши страницу.</string>
+    <string name="restore_codex">Восстановить все</string>
+    <string name="close_codex">Закрыть рукопись</string>
+    <string name="codex_delete_title">Удалить рукопись?</string>
+    <plurals name="codex_delete_text">
+        <item quantity="one">Её %d страница и всё на полях пропадут.</item>
+        <item quantity="few">Её %d страницы и всё на полях пропадут.</item>
+        <item quantity="many">Её %d страниц и всё на полях пропадут.</item>
+        <item quantity="other">Её %d страницы и всё на полях пропадут.</item>
+    </plurals>
+    <string name="colophon_of_codex">Всё в целом</string>
+    <string name="surprise_label">Не так, как я думал</string>
+
+    <!-- Closing -->
+    <string name="close_title">Закрытие рукописи</string>
+    <string name="close_intro">Закрыть рукопись — значит сжать её до сути. Что можешь сказать одним предложением, то ты понял.</string>
+    <string name="close_sentence">Одним предложением</string>
+    <string name="close_sentence_hint">Это о том, что…</string>
+    <string name="close_words">Тремя словами</string>
+    <string name="close_words_hint">Их вытиснят на корешке</string>
+    <string name="close_words_more">Три слова, не больше — в этом и смысл.</string>
+    <string name="close_surprise">Что оказалось иначе?</string>
+    <string name="close_you_wrote">В предисловии ты написал:</string>
+    <string name="close_surprise_hint">Я думал… а оказалось…</string>
+    <string name="close_open_questions">Вопросов без ответа: %d</string>
+    <string name="close_do">Закрыть и запечатать</string>
+
+    <!-- Writing a page -->
+    <string name="page_new_title">Новая страница</string>
+    <string name="page_edit_title">Страница</string>
+    <string name="page_rule">Закрой источник. Пиши по памяти, своими словами. Пропуски — не беда: потом увидишь пробелы.</string>
+    <string name="page_title_hint">О чём эта страница</string>
+    <string name="locator_book">Глава или страница</string>
+    <string name="locator_time">Таймкод, например 12:40</string>
+    <string name="locator_article">Раздел</string>
+    <string name="locator_course">Урок</string>
+    <string name="page_body">Своими словами</string>
+    <string name="page_body_hint">Как будто рассказываешь другу за ужином…</string>
+    <string name="page_borrowed">Это были чернила автора — они ушли в цитату ниже. Страница — для твоих собственных слов.</string>
+    <string name="page_quote">Слова автора</string>
+    <string name="page_quote_hint">Цитата, которую стоит сохранить</string>
+    <string name="page_cues">Вопросы на полях</string>
+    <string name="page_cues_hint">Вопросы, на которые отвечает твой текст, по одному в строке. Потом увидишь только их и ответишь по памяти.</string>
+    <string name="page_cues_placeholder">Почему…\nЧто будет, если…</string>
+    <string name="page_gold">Золотая строка</string>
+    <string name="page_gold_hint">Самая суть, не больше строки. Ляжет золотом.</string>
+    <string name="page_gold_placeholder">Главное — это…</string>
+    <string name="page_colophon">Колофон</string>
+    <string name="page_colophon_hint">Одно-два предложения итога, внизу страницы.</string>
+    <string name="page_colophon_placeholder">Короче говоря…</string>
+    <string name="page_bind">Вшить страницу</string>
+    <string name="voice">Вслух</string>
+    <string name="voice_prompt">Расскажи своими словами</string>
+
+    <!-- A page -->
+    <string name="ink_status">Чернила %1$s · выцветут %2$s</string>
+    <string name="ink_fading">Чернила %s · выцветают</string>
+    <string name="ink_gold">Золотой лист: эта страница больше не выцветает</string>
+    <string name="restore_page">Восстановить по памяти</string>
+    <string name="explain_novice">Объяснить послушнику</string>
+    <string name="margins">На полях</string>
+    <string name="margins_hint">Чем больше дорог ведёт к мысли, тем легче её найти.</string>
+    <string name="gloss_novice">Послушник спросил</string>
+    <string name="gloss_exemplum">Свой пример</string>
+    <string name="gloss_parable">Притча</string>
+    <string name="gloss_dissent">Спор с автором</string>
+    <string name="gloss_seal">Печать опыта</string>
+    <string name="exemplum_hint">Где ты видел это сам? Не из книги — из своей жизни.</string>
+    <string name="parable_hint">На что это похоже? Объясни через что-то совсем другое.</string>
+    <string name="dissent_hint">С чем ты не согласен? Где автор неправ или чего не учёл?</string>
+    <string name="seal_hint">Ты применил это в жизни. Что сделал и что из этого вышло?</string>
+    <string name="gloss_delete">Стереть с полей?</string>
+    <string name="palimpsest">Палимпсест</string>
+    <string name="palimpsest_hint">Каждое восстановление — новый слой поверх страницы.</string>
+    <string name="page_delete_title">Вырезать страницу?</string>
+    <string name="page_delete_text">Страница, её поля и восстановления пропадут.</string>
+
+    <!-- The novice -->
+    <string name="novice_title">Послушник</string>
+    <string name="novice_about">о «%s»</string>
+    <string name="novice_rule">Объясни просто, не глядя на страницу. Где слова не находятся — там понимание тонкое.</string>
+    <string name="novice_answer_hint">Понимаешь, тут всё так…</string>
+    <string name="novice_answer">Объяснить</string>
+    <string name="novice_other">Другой вопрос</string>
+    <string name="novice_peek">Подсмотреть</string>
+    <string name="novice_hide">Спрятать страницу</string>
+    <string name="novice_thanks">Теперь понял! Спасибо, брат.</string>
+    <string name="novice_more">У него ещё вопрос</string>
+    <string name="novice_done">Я спросил всё, что хотел. Ты хорошо объясняешь!</string>
+    <string-array name="novice_questions">
+        <item>А почему так?</item>
+        <item>Приведи пример из жизни?</item>
+        <item>Как объяснить это десятилетнему?</item>
+        <item>А что было бы, если бы это было неправдой?</item>
+        <item>С чем это спорит?</item>
+        <item>А где это не работает?</item>
+        <item>На что это похоже? Что ещё устроено так же?</item>
+        <item>А зачем мне это знать?</item>
+        <item>Что из этого следует?</item>
+        <item>Как это связано с тем, что ты знал раньше?</item>
+        <item>Какое здесь самое важное слово и почему?</item>
+        <item>В чём тут обычно ошибаются?</item>
+        <item>Как проверить, что это правда?</item>
+        <item>Что ты завтра сделаешь иначе из-за этого?</item>
+        <item>Скажешь это одним предложением?</item>
+        <item>А что тебе самому тут пока непонятно?</item>
+    </string-array>
+
+    <!-- Restoring -->
+    <string name="restore_title">Восстановление</string>
+    <string name="restore_progress">Страница %1$d из %2$d</string>
+    <string name="mode_recall">по памяти</string>
+    <string name="mode_lacunae">лакуны</string>
+    <string name="mode_cues">вопросы с полей</string>
+    <string name="restore_task">Задание</string>
+    <string name="ask_recall">Страница выцвела. Запиши всё, что о ней помнишь, не подглядывая. Или расскажи вслух.</string>
+    <string name="ask_cues">Ответь на вопросы с полей — письменно, вслух или в уме.</string>
+    <string name="ask_lacunae">Мыши съели несколько слов. Скажи про себя, что там было.</string>
+    <string name="recall_hint">Что я помню…</string>
+    <string name="cues_hint">Мои ответы… (или ответь в уме)</string>
+    <string name="restore_compare">Сверить</string>
+    <string name="restore_in_head">Вспомнил в уме</string>
+    <string name="stake_title">Поставь свечи</string>
+    <string name="stake_hint">Пока не посмотрел: насколько ты уверен, что вспомнил верно?</string>
+    <string name="stake_1">Не уверен</string>
+    <string name="stake_2">Пожалуй</string>
+    <string name="stake_3">Уверен</string>
+    <string name="stake_3_note">Три свечи: если всё же забыл, страница попадёт в Книгу ошибок. Уверенные ошибки, исправленные, запоминаются крепче всего.</string>
+    <string name="coverage">Ты вспомнил %s страницы</string>
+    <string name="grade_title">Как прошло?</string>
+    <string name="grade_again">Забыл</string>
+    <string name="grade_hard">С трудом</string>
+    <string name="grade_good">Помню</string>
+    <string name="grade_easy">Легко</string>
+    <string name="span_today">сегодня</string>
+    <string name="span_tomorrow">завтра</string>
+    <plurals name="span_days">
+        <item quantity="one">через %d день</item>
+        <item quantity="few">через %d дня</item>
+        <item quantity="many">через %d дней</item>
+        <item quantity="other">через %d дня</item>
+    </plurals>
+    <plurals name="span_months">
+        <item quantity="one">через %d месяц</item>
+        <item quantity="few">через %d месяца</item>
+        <item quantity="many">через %d месяцев</item>
+        <item quantity="other">через %d месяца</item>
+    </plurals>
+    <plurals name="span_years">
+        <item quantity="one">через %d год</item>
+        <item quantity="few">через %d года</item>
+        <item quantity="many">через %d лет</item>
+        <item quantity="other">через %d года</item>
+    </plurals>
+    <plurals name="restored">
+        <item quantity="one">Восстановлена %d страница</item>
+        <item quantity="few">Восстановлены %d страницы</item>
+        <item quantity="many">Восстановлено %d страниц</item>
+        <item quantity="other">Восстановлено %d страницы</item>
+    </plurals>
+    <string name="restore_done_text">Свечи погашены. Чернила темнее, чем были.</string>
+    <string name="restore_nothing">Нечего восстанавливать</string>
+    <string name="restore_nothing_text">Все чернила здесь свежие.</string>
+    <string name="restore_errata_note">Уверенная ошибка попала в Книгу ошибок. Исправь её поскорее — и она будет держаться крепче остальных.</string>
+
+    <!-- Chronicle -->
+    <string name="chronicle_title">Летопись</string>
+    <string name="chronicle_sub">Что написано и как держится.</string>
+    <string name="chronicle_empty">Летопись заполнится, когда начнёшь писать и восстанавливать.</string>
+    <string name="stat_codices">рукописей</string>
+    <string name="stat_pages">страниц</string>
+    <string name="stat_restored">восстановлений</string>
+    <string name="stat_days">дней подряд</string>
+    <string name="ink_state">Чернила</string>
+    <string name="ink_fresh">Свежие</string>
+    <string name="ink_fading_state">Выцветают</string>
+    <string name="ink_faint">Едва видны</string>
+    <string name="ink_gilded">Позолочены</string>
+    <string name="eye_title">Глаз переписчика</string>
+    <string name="eye_hint">Как часто ты оказывался прав, ставя одну, две или три свечи. Пунктир — там, где окажется верный глаз.</string>
+    <string name="eye_empty">Поставь свечи на несколько восстановлений — и здесь появится твой глаз.</string>
+    <string name="eye_oversure">Ты увереннее, чем прав. Ставь три свечи, только если смог бы объяснить послушнику.</string>
+    <string name="eye_undersure">Ты знаешь больше, чем думаешь. Доверяй себе чуть больше.</string>
+    <string name="eye_true">Глаз верный: ты знаешь, что знаешь.</string>
+    <plurals name="eye_count">
+        <item quantity="one">по %d восстановлению со ставкой</item>
+        <item quantity="few">по %d восстановлениям со ставкой</item>
+        <item quantity="many">по %d восстановлениям со ставкой</item>
+        <item quantity="other">по %d восстановлениям со ставкой</item>
+    </plurals>
+    <string name="golden_pages">Позолоченные страницы</string>
+    <string name="sealed_pages">Запечатаны опытом</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Настройки</string>
+    <string name="set_hours">Часы</string>
+    <string name="set_hours_hint">Два колокола в день — и только когда есть дело.</string>
+    <string name="set_matins_hint">Утром: вспомнить написанное вчера</string>
+    <string name="set_compline_hint">Перед сном: восстановить несколько выцветающих страниц</string>
+    <string name="set_at">Звонит в</string>
+    <string name="set_compline_size">Страниц на Повечерии</string>
+    <string name="set_retention">Насколько крепко помнить</string>
+    <string name="set_retention_hint">Страницу пора восстановить, когда шанс её вспомнить падает ниже этого. Строже — значит чаще.</string>
+    <string name="retention_light">85%</string>
+    <string name="retention_usual">90%</string>
+    <string name="retention_strict">95%</string>
+    <string name="set_language">Язык</string>
+    <string name="lang_system">Системный</string>
+    <string name="set_backup">Резервная копия</string>
+    <string name="set_backup_hint">Всё хранится только на этом телефоне. Время от времени сохраняй копию.</string>
+    <string name="backup_export">Сохранить копию</string>
+    <string name="backup_export_hint">Один файл JSON</string>
+    <string name="backup_import">Восстановить из копии</string>
+    <string name="backup_import_hint">Заменит всё, что здесь есть</string>
+    <string name="backup_import_confirm">Всё, что сейчас в приложении, будет заменено копией.</string>
+    <string name="backup_import_do">Заменить</string>
+    <string name="backup_done">Копия сохранена</string>
+    <string name="backup_failed">Не получилось сохранить копию</string>
+    <string name="backup_restored">Восстановлено из копии</string>
+    <string name="backup_bad">Это не копия Scriptor</string>
+    <string name="about">Scriptor %s · часть Stillcraft</string>
+
+    <!-- Welcome -->
+    <string name="welcome_1_title">Скрипторий для того, что ты узнал</string>
+    <string name="welcome_1_text">После книги, лекции или видео запиши своими словами, что понял. Уже одно это оставляет в памяти гораздо больше.</string>
+    <string name="welcome_2_title">Чернила выцветают, как память</string>
+    <string name="welcome_2_text">Каждая страница выцветает по твоей собственной кривой забывания. Перепиши её по памяти — и чернила снова чёрные и держатся дольше.</string>
+    <string name="welcome_ink_1">Интервалы лучше зубрёжки.</string>
+    <string name="welcome_ink_2">Вспоминать — и есть учиться.</string>
+    <string name="welcome_ink_3">Свои слова — своя мысль.</string>
+    <string name="welcome_3_title">Страница расцветает по мере понимания</string>
+    <string name="welcome_3_text">Ответь послушнику, найди примеры из жизни, поспорь с автором — и страница заслужит буквицу, вьюнок, сусальное золото и печать.</string>
+    <string name="welcome_start">Начать первую рукопись</string>
+</resources>
