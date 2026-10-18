@@ -3,6 +3,7 @@ package app.scriptor.data
 import android.content.Context
 import app.scriptor.AppContainer
 import app.scriptor.domain.Memory
+import app.scriptor.domain.Place
 
 /**
  * A scriptorium half a season in, for screenshots (`-Pdemo` only): a book on learning with a gilded
@@ -38,6 +39,7 @@ object DemoSeed {
         val ru = context.resources.configuration.locales[0].language == "ru"
         val now = System.currentTimeMillis()
         fun at(daysAgo: Double) = now - (daysAgo * DAY).toLong()
+        val ids = mutableMapOf<String, Long>()
         for (cx in if (ru) russian() else english()) {
             val id = dao.insert(
                 Codex(
@@ -50,10 +52,11 @@ object DemoSeed {
                 val pid = dao.insert(
                     Page(
                         codexId = id, title = p.title, locator = p.locator, body = p.body, cues = p.cues, gold = p.gold, colophon = p.colophon,
-                        quote = p.quote, stability = p.s, difficulty = 5.0, reviewedAt = at(p.since), reps = p.reps, lapses = p.lapses,
+                        quote = p.quote, miniature = if (p.title == CURVE_RU || p.title == CURVE_EN) curve() else "", stability = p.s, difficulty = 5.0, reviewedAt = at(p.since), reps = p.reps, lapses = p.lapses,
                         erratum = p.erratum, createdAt = at(p.age), updatedAt = at(p.age),
                     )
                 )
+                ids[p.title] = pid
                 p.glosses.forEachIndexed { i, (k, pt) ->
                     dao.insert(Gloss(pageId = pid, kind = k.name, prompt = pt.first, text = pt.second, createdAt = at(p.age) + (i + 1) * 3_600_000L))
                 }
@@ -62,7 +65,91 @@ object DemoSeed {
                 }
             }
         }
-        c.settings.update { it.copy(onboarded = true) }
+        fun id(title: String) = ids[title]
+        val t = { en: String, rus: String -> if (ru) rus else en }
+        // Red threads across the books.
+        listOf(
+            Triple(t("Recall beats rereading", "Вспоминание сильнее перечитывания"), t("The forgetting curve", "Кривая забывания"),
+                t("Each recall is what flattens the curve.", "Каждое вспоминание и делает кривую положе.")),
+            Triple(t("The illusion of knowing", "Иллюзия знания"), t("Two systems", "Две системы"),
+                t("Fluency is System 1 saying \"I know this\" before System 2 has checked.", "Беглость — это Система 1 говорит «знаю», пока Система 2 ещё не проверила.")),
+            Triple(t("It isn't things that trouble us", "Нас тревожат не вещи"), t("Anchoring", "Якорение"),
+                t("Both: the first judgement isn't the event. Notice it, then decide.", "Обе о том, что первое суждение — ещё не событие. Заметь его, потом решай.")),
+            Triple(t("Mix the topics", "Перемешивай темы"), t("Sleep and memory", "Сон и память"),
+                t("Hard practice by day, and sleep sorts it at night.", "Трудная практика днём, а ночью сон всё раскладывает.")),
+        ).forEachIndexed { i, (a, b, note) ->
+            val from = id(a) ?: return@forEachIndexed
+            val to = id(b) ?: return@forEachIndexed
+            dao.insert(Thread(fromPage = from, toPage = to, note = note, createdAt = at(10.0 - i)))
+        }
+        // A disputation on mixing.
+        id(t("Mix the topics", "Перемешивай темы"))?.let { pid ->
+            val d = app.scriptor.domain.Dispute(
+                t("Mixing kinds of problems teaches better than blocks.", "Перемешанные задачи учат лучше, чем блоки."),
+                listOf(
+                    t("Blocks feel faster, and students do better during practice.", "С блоками быстрее, и на тренировке результаты лучше.") to
+                        t("Better during practice, worse a week later: what is measured is the wrong moment.", "Лучше на тренировке, хуже через неделю: мерили не в тот момент."),
+                    t("A beginner who doesn't know any method yet will just drown.", "Новичок, не знающий ни одного способа, просто утонет.") to
+                        t("True: first a short block to meet each kind, then mix.", "Верно: сначала короткий блок, чтобы познакомиться, потом перемешивать."),
+                ),
+            )
+            dao.insert(Gloss(pageId = pid, kind = GlossKind.DISPUTE.name, prompt = d.thesis, text = d.encode(), createdAt = at(8.0)))
+        }
+        // The monastery of memory.
+        listOf(
+            Triple(Place.GATE, t("Recall beats rereading", "Вспоминание сильнее перечитывания"),
+                t("The gatekeeper won't open until I recite the password from memory; a sign with the password on it is nailed up, and he tears it down.",
+                    "Привратник не открывает, пока я не скажу пароль по памяти; табличку с паролем он срывает с ворот.")),
+            Triple(Place.REFECTORY, t("Mix the topics", "Перемешивай темы"),
+                t("The cook throws soup, bread and pears into one huge pot, and the monks have to guess what each spoonful is.",
+                    "Повар валит суп, хлеб и груши в один котёл, и монахи угадывают, что в каждой ложке.")),
+            Triple(Place.CELL, t("Sleep and memory", "Сон и память"),
+                t("On the bed, a sleeping monk sorts glowing pages into a chest, without waking.",
+                    "На кровати спящий монах, не просыпаясь, раскладывает светящиеся листы по сундуку.")),
+            Triple(Place.BELLTOWER, t("The forgetting curve", "Кривая забывания"),
+                t("The bell rope is a slide: each time the bell rings, the slide gets less steep.",
+                    "Верёвка колокола — горка: с каждым ударом колокола она всё положе.")),
+            Triple(Place.CHAPEL, t("It isn't things that trouble us", "Нас тревожат не вещи"),
+                t("A stone in the aisle has a label: \"just a stone\". The monks who trip are shouting at the label.",
+                    "На камне в проходе табличка «просто камень». Споткнувшиеся монахи кричат на табличку.")),
+        ).forEachIndexed { i, (place, page, image) ->
+            val pid = id(page) ?: return@forEachIndexed
+            dao.insert(Locus(place = place.name, pageId = pid, image = image, createdAt = at(5.0 - i * 0.1)))
+        }
+        c.settings.update {
+            it.copy(onboarded = true, gender = if (ru) app.scriptor.domain.Gender.MALE else it.gender, crafts = app.scriptor.domain.Craft.entries.map { k -> k.name }.toSet())
+        }
+    }
+
+    private const val CURVE_RU = "Кривая забывания"
+    private const val CURVE_EN = "The forgetting curve"
+
+    /** A hand-drawn forgetting curve: the axes, the steep first fall, and the flatter falls after each review. */
+    private fun curve(): String {
+        val strokes = mutableListOf<List<Pair<Float, Float>>>()
+        strokes += listOf(0.12f to 0.08f, 0.12f to 0.88f, 0.94f to 0.88f)
+        strokes += listOf(0.09f to 0.13f, 0.12f to 0.08f, 0.15f to 0.13f)
+        var x0 = 0.12f
+        val spans = listOf(0.12f, 0.17f, 0.24f, 0.29f)
+        val depths = listOf(0.62f, 0.42f, 0.27f, 0.16f)
+        spans.forEachIndexed { i, span ->
+            val pts = (0..14).map { k ->
+                val f = k / 14f
+                val drop = depths[i] * (1 - kotlin.math.exp(-4f * f)) / (1 - kotlin.math.exp(-4f))
+                (x0 + span * f) to (0.14f + drop)
+            }
+            strokes += pts
+            // Back to the top: a review.
+            if (i < spans.size - 1) strokes += listOf(pts.last(), (x0 + span) to 0.14f)
+            x0 += span
+        }
+        // Little ticks for the reviews.
+        var x = 0.12f
+        spans.dropLast(1).forEach { span ->
+            x += span
+            strokes += listOf(x to 0.85f, x to 0.91f)
+        }
+        return app.scriptor.domain.Strokes.encode(strokes)
     }
 
     private fun russian() = listOf(

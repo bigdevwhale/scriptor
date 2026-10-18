@@ -14,7 +14,7 @@ data class Illumination(
     val initial: Boolean,
     /** Two or more questions on the margin, in cinnabar. */
     val rubric: Boolean,
-    /** The novice was answered, or two examples of one's own: vines climb the margin. */
+    /** The novice was answered, a disputation held, or two examples of one's own: vines climb the margin. */
     val vines: Boolean,
     /** Holds for half a year: gold leaf. */
     val gold: Boolean,
@@ -30,7 +30,7 @@ object Rules {
         return Illumination(
             initial = p.reps > 0,
             rubric = p.cueList.size >= 2,
-            vines = mine.any { it.kindOf == GlossKind.NOVICE } || mine.count { it.kindOf == GlossKind.EXEMPLUM } >= 2,
+            vines = mine.any { it.kindOf == GlossKind.NOVICE || it.kindOf == GlossKind.DISPUTE } || mine.count { it.kindOf == GlossKind.EXEMPLUM } >= 2,
             gold = p.gilded,
             seal = mine.any { it.kindOf == GlossKind.SEAL },
         )
@@ -46,14 +46,15 @@ object Rules {
 
     /**
      * Each restoration asks in a different way, so the page is reached by more than one road:
-     * rewrite it, fill the lacunae, answer the margin.
+     * rewrite it, answer the margin, fill the lacunae, draw the miniature again. Crafts not yet open are skipped.
      */
-    fun mode(p: Page, history: List<Review>): Mode {
+    fun mode(p: Page, history: List<Review>, crafts: Set<Craft> = Craft.entries.toSet()): Mode {
         val n = history.count { it.pageId == p.id }
         val order = buildList {
             add(Mode.RECALL)
-            if (p.cueList.isNotEmpty()) add(Mode.CUES)
-            add(Mode.LACUNAE)
+            if (p.cueList.isNotEmpty() && Craft.CINNABAR in crafts) add(Mode.CUES)
+            if (Craft.LACUNAE in crafts) add(Mode.LACUNAE)
+            if (p.miniature.isNotBlank() && Craft.MINIATURE in crafts) add(Mode.MINIATURE)
         }
         return order[n % order.size]
     }
@@ -74,6 +75,33 @@ object Rules {
         val staked = reviews.filter { it.confidence == c }
         c to if (staked.isEmpty()) null else staked.count { it.grade >= Grade.GOOD.n } / staked.size.toFloat()
     }
+
+    /** One question of the abbot's exam: a margin question, the codex it came from, and the codices offered as guesses. */
+    data class Question(val page: Page, val cue: String, val options: List<Long>)
+
+    /**
+     * The abbot's exam: margin questions drawn from every codex in turn, so that the first task is to
+     * tell which book a question belongs to. At most [n], never two in a row from the same codex when it can be helped.
+     */
+    fun exam(pages: List<Page>, n: Int = 10, seed: Long = System.currentTimeMillis()): List<Question> {
+        val rnd = java.util.Random(seed)
+        val byCodex = pages.filter { it.cueList.isNotEmpty() }.groupBy { it.codexId }.mapValues { it.value.shuffled(rnd).toMutableList() }
+        if (byCodex.size < 2) return emptyList()
+        val codices = byCodex.keys.toList()
+        val out = mutableListOf<Question>()
+        var last = -1L
+        while (out.size < n && byCodex.values.any { it.isNotEmpty() }) {
+            val from = codices.shuffled(rnd).sortedBy { if (it == last) 1 else 0 }.firstOrNull { byCodex.getValue(it).isNotEmpty() } ?: break
+            val page = byCodex.getValue(from).removeAt(0)
+            val options = (listOf(from) + codices.filter { it != from }.shuffled(rnd).take(3)).shuffled(rnd)
+            out += Question(page, page.cueList[rnd.nextInt(page.cueList.size)], options)
+            last = from
+        }
+        return out
+    }
+
+    /** The abbot examines again a month after the last time. */
+    const val EXAM_EVERY_DAYS = 28
 
     val CALIBRATION_TARGET = mapOf(1 to 0.35f, 2 to 0.7f, 3 to 0.95f)
 

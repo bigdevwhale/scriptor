@@ -4,7 +4,25 @@ import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Article
 import androidx.compose.material.icons.automirrored.rounded.MenuBook
+import androidx.compose.material.icons.automirrored.rounded.Notes
+import androidx.compose.material.icons.rounded.Bed
+import androidx.compose.material.icons.rounded.Brush
+import androidx.compose.material.icons.rounded.ChildCare
+import androidx.compose.material.icons.rounded.Church
 import androidx.compose.material.icons.rounded.Class
+import androidx.compose.material.icons.rounded.DoorFront
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.FormatColorText
+import androidx.compose.material.icons.rounded.Gavel
+import androidx.compose.material.icons.rounded.HistoryEdu
+import androidx.compose.material.icons.rounded.Hub
+import androidx.compose.material.icons.rounded.LocalLibrary
+import androidx.compose.material.icons.rounded.NotificationsActive
+import androidx.compose.material.icons.rounded.Park
+import androidx.compose.material.icons.rounded.PestControlRodent
+import androidx.compose.material.icons.rounded.Quiz
+import androidx.compose.material.icons.rounded.Restaurant
+import androidx.compose.material.icons.rounded.Stairs
 import androidx.compose.material.icons.rounded.OndemandVideo
 import androidx.compose.material.icons.rounded.Podcasts
 import androidx.compose.material.icons.rounded.School
@@ -15,6 +33,8 @@ import app.scriptor.R
 import app.scriptor.data.GlossKind
 import app.scriptor.data.Kind
 import app.scriptor.data.Mode
+import app.scriptor.domain.Craft
+import app.scriptor.domain.Place
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -72,6 +92,9 @@ object T {
             Mode.RECALL -> R.string.mode_recall
             Mode.LACUNAE -> R.string.mode_lacunae
             Mode.CUES -> R.string.mode_cues
+            Mode.MINIATURE -> R.string.mode_miniature
+            Mode.PALACE -> R.string.mode_palace
+            Mode.EXAM -> R.string.mode_exam
         }
     )
 
@@ -82,6 +105,7 @@ object T {
             GlossKind.PARABLE -> R.string.gloss_parable
             GlossKind.DISSENT -> R.string.gloss_dissent
             GlossKind.SEAL -> R.string.gloss_seal
+            GlossKind.DISPUTE -> R.string.gloss_dispute
         }
     )
 
@@ -111,6 +135,59 @@ object T {
                 else -> R.string.hour_compline
             }
         )
+    }
+
+    fun place(c: Context, p: Place): String = c.getString(placeId(p))
+
+    fun placeId(p: Place): Int = when (p) {
+        Place.GATE -> R.string.place_gate
+        Place.REFECTORY -> R.string.place_refectory
+        Place.CELL -> R.string.place_cell
+        Place.BELLTOWER -> R.string.place_belltower
+        Place.CHAPEL -> R.string.place_chapel
+        Place.CRYPT -> R.string.place_crypt
+        Place.SCRIPTORIUM -> R.string.place_scriptorium
+        Place.LIBRARY -> R.string.place_library
+        Place.GARDEN -> R.string.place_garden
+    }
+
+    fun placeIcon(p: Place): ImageVector = when (p) {
+        Place.GATE -> Icons.Rounded.DoorFront
+        Place.REFECTORY -> Icons.Rounded.Restaurant
+        Place.CELL -> Icons.Rounded.Bed
+        Place.BELLTOWER -> Icons.Rounded.NotificationsActive
+        Place.CHAPEL -> Icons.Rounded.Church
+        Place.CRYPT -> Icons.Rounded.Stairs
+        Place.SCRIPTORIUM -> Icons.Rounded.HistoryEdu
+        Place.LIBRARY -> Icons.Rounded.LocalLibrary
+        Place.GARDEN -> Icons.Rounded.Park
+    }
+
+    /** A craft's name, what it is for, and what opens it. */
+    fun craftIds(k: Craft): Triple<Int, Int, Int> = when (k) {
+        Craft.INK -> Triple(R.string.craft_ink, R.string.craft_ink_text, R.string.craft_ink_need)
+        Craft.CINNABAR -> Triple(R.string.craft_cinnabar, R.string.craft_cinnabar_text, R.string.craft_cinnabar_need)
+        Craft.NOVICE -> Triple(R.string.craft_novice, R.string.craft_novice_text, R.string.craft_novice_need)
+        Craft.LACUNAE -> Triple(R.string.craft_lacunae, R.string.craft_lacunae_text, R.string.craft_lacunae_need)
+        Craft.MARGINS -> Triple(R.string.craft_margins, R.string.craft_margins_text, R.string.craft_margins_need)
+        Craft.MINIATURE -> Triple(R.string.craft_miniature, R.string.craft_miniature_text, R.string.craft_miniature_need)
+        Craft.DISPUTATIO -> Triple(R.string.craft_disputatio, R.string.craft_disputatio_text, R.string.craft_disputatio_need)
+        Craft.THREADS -> Triple(R.string.craft_threads, R.string.craft_threads_text, R.string.craft_threads_need)
+        Craft.EXAM -> Triple(R.string.craft_exam, R.string.craft_exam_text, R.string.craft_exam_need)
+        Craft.PALACE -> Triple(R.string.craft_palace, R.string.craft_palace_text, R.string.craft_palace_need)
+    }
+
+    fun craftIcon(k: Craft): ImageVector = when (k) {
+        Craft.INK -> Icons.Rounded.Edit
+        Craft.CINNABAR -> Icons.Rounded.FormatColorText
+        Craft.NOVICE -> Icons.Rounded.ChildCare
+        Craft.LACUNAE -> Icons.Rounded.PestControlRodent
+        Craft.MARGINS -> Icons.AutoMirrored.Rounded.Notes
+        Craft.MINIATURE -> Icons.Rounded.Brush
+        Craft.DISPUTATIO -> Icons.Rounded.Gavel
+        Craft.THREADS -> Icons.Rounded.Hub
+        Craft.EXAM -> Icons.Rounded.Quiz
+        Craft.PALACE -> Icons.Rounded.Church
     }
 
     fun percent(f: Double): String = "${(f * 100).roundToInt()}%"

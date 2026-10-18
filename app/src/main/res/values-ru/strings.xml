@@ -26,10 +26,10 @@
     <string name="matins">Утреня</string>
     <string name="compline">Повечерие</string>
     <plurals name="matins_text">
-        <item quantity="one">Вспомни %d страницу, которую написал вчера, — прежде чем заглянуть в неё.</item>
-        <item quantity="few">Вспомни %d страницы, которые написал вчера, — прежде чем заглянуть в них.</item>
-        <item quantity="many">Вспомни %d страниц, которые написал вчера, — прежде чем заглянуть в них.</item>
-        <item quantity="other">Вспомни %d страницы, которые написал вчера, — прежде чем заглянуть в них.</item>
+        <item quantity="one">Вспомни %d страницу, которую {написал|написала} вчера, — прежде чем заглянуть в неё.</item>
+        <item quantity="few">Вспомни %d страницы, которые {написал|написала} вчера, — прежде чем заглянуть в них.</item>
+        <item quantity="many">Вспомни %d страниц, которые {написал|написала} вчера, — прежде чем заглянуть в них.</item>
+        <item quantity="other">Вспомни %d страницы, которые {написал|написала} вчера, — прежде чем заглянуть в них.</item>
     </plurals>
     <plurals name="compline_text">
         <item quantity="one">Выцветает %1$d страница. Восстанови её перед сном — так память закрепляется лучше всего.</item>
@@ -55,12 +55,12 @@
     <string name="restore_compline">Только %d перед сном</string>
     <string name="errata_title">Книга ошибок</string>
     <plurals name="errata_text">
-        <item quantity="one">%d страница, в которой ты был уверен — и забыл. Исправленная, она запомнится крепче всех.</item>
-        <item quantity="few">%d страницы, в которых ты был уверен — и забыл. Исправленные, они запомнятся крепче всех.</item>
-        <item quantity="many">%d страниц, в которых ты был уверен — и забыл. Исправленные, они запомнятся крепче всех.</item>
-        <item quantity="other">%d страницы, в которых ты был уверен — и забыл. Исправленные, они запомнятся крепче всех.</item>
+        <item quantity="one">%d страница, в которой ты {был уверен|была уверена} — и {забыл|забыла}. Исправленная, она запомнится крепче всех.</item>
+        <item quantity="few">%d страницы, в которых ты {был уверен|была уверена} — и {забыл|забыла}. Исправленные, они запомнятся крепче всех.</item>
+        <item quantity="many">%d страниц, в которых ты {был уверен|была уверена} — и {забыл|забыла}. Исправленные, они запомнятся крепче всех.</item>
+        <item quantity="other">%d страницы, в которых ты {был уверен|была уверена} — и {забыл|забыла}. Исправленные, они запомнятся крепче всех.</item>
     </plurals>
-    <string name="errata_intro">Здесь то, на что ты поставил три свечи — и всё же забыл. Уверенная ошибка, когда её исправишь, запоминается лучше всего остального.</string>
+    <string name="errata_intro">Здесь то, на что ты {поставил|поставила} три свечи — и всё же {забыл|забыла}. Уверенная ошибка, когда её исправишь, запоминается лучше всего остального.</string>
     <string name="errata_empty">Пусто. Глаз у тебя верный.</string>
     <string name="errata_restore">Исправить</string>
     <string name="desk_open">Раскрыты на столе</string>
@@ -70,7 +70,7 @@
     <string name="write_page_short">Страница</string>
     <string name="new_codex">Новая рукопись</string>
     <string name="empty_title">Стол пуст</string>
-    <string name="empty_text">Прочитай главу, посмотри лекцию, послушай подкаст. Потом закрой и напиши, что понял, своими словами. С этой страницы всё и начинается.</string>
+    <string name="empty_text">Прочитай главу, посмотри лекцию, послушай подкаст. Потом закрой и напиши, что {понял|поняла}, своими словами. С этой страницы всё и начинается.</string>
     <plurals name="pages">
         <item quantity="one">%d страница</item>
         <item quantity="few">%d страницы</item>
@@ -100,7 +100,7 @@
     <string name="codex_binding">Переплёт</string>
     <string name="codex_create">Переплести рукопись</string>
     <string name="preface">Предисловие</string>
-    <string name="preface_hint">Перед началом: что ты уже знаешь об этом и чего ждёшь? Даже неверные догадки помогают запомнить — потом увидишь, где ошибался.</string>
+    <string name="preface_hint">Перед началом: что ты уже знаешь об этом и чего ждёшь? Даже неверные догадки помогают запомнить — потом увидишь, где {ошибался|ошибалась}.</string>
     <string name="preface_placeholder">Думаю, это о том, что…</string>
     <string name="questions">Вопросы к источнику</string>
     <string name="questions_hint">До трёх вопросов, на которые хочешь получить ответ, по одному в строке. Читай в поисках ответов.</string>
@@ -118,19 +118,19 @@
         <item quantity="other">Её %d страницы и всё на полях пропадут.</item>
     </plurals>
     <string name="colophon_of_codex">Всё в целом</string>
-    <string name="surprise_label">Не так, как я думал</string>
+    <string name="surprise_label">Не так, как я {думал|думала}</string>
 
     <!-- Closing -->
     <string name="close_title">Закрытие рукописи</string>
-    <string name="close_intro">Закрыть рукопись — значит сжать её до сути. Что можешь сказать одним предложением, то ты понял.</string>
+    <string name="close_intro">Закрыть рукопись — значит сжать её до сути. Что можешь сказать одним предложением, то ты {понял|поняла}.</string>
     <string name="close_sentence">Одним предложением</string>
     <string name="close_sentence_hint">Это о том, что…</string>
     <string name="close_words">Тремя словами</string>
     <string name="close_words_hint">Их вытиснят на корешке</string>
     <string name="close_words_more">Три слова, не больше — в этом и смысл.</string>
     <string name="close_surprise">Что оказалось иначе?</string>
-    <string name="close_you_wrote">В предисловии ты написал:</string>
-    <string name="close_surprise_hint">Я думал… а оказалось…</string>
+    <string name="close_you_wrote">В предисловии ты {написал|написала}:</string>
+    <string name="close_surprise_hint">Я {думал|думала}… а оказалось…</string>
     <string name="close_open_questions">Вопросов без ответа: %d</string>
     <string name="close_do">Закрыть и запечатать</string>
 
@@ -174,10 +174,10 @@
     <string name="gloss_parable">Притча</string>
     <string name="gloss_dissent">Спор с автором</string>
     <string name="gloss_seal">Печать опыта</string>
-    <string name="exemplum_hint">Где ты видел это сам? Не из книги — из своей жизни.</string>
+    <string name="exemplum_hint">Где ты {видел|видела} это сам{|а}? Не из книги — из своей жизни.</string>
     <string name="parable_hint">На что это похоже? Объясни через что-то совсем другое.</string>
-    <string name="dissent_hint">С чем ты не согласен? Где автор неправ или чего не учёл?</string>
-    <string name="seal_hint">Ты применил это в жизни. Что сделал и что из этого вышло?</string>
+    <string name="dissent_hint">С чем ты не {согласен|согласна}? Где автор неправ или чего не учёл?</string>
+    <string name="seal_hint">Ты {применил|применила} это в жизни. Что {сделал|сделала} и что из этого вышло?</string>
     <string name="gloss_delete">Стереть с полей?</string>
     <string name="palimpsest">Палимпсест</string>
     <string name="palimpsest_hint">Каждое восстановление — новый слой поверх страницы.</string>
@@ -193,7 +193,7 @@
     <string name="novice_other">Другой вопрос</string>
     <string name="novice_peek">Подсмотреть</string>
     <string name="novice_hide">Спрятать страницу</string>
-    <string name="novice_thanks">Теперь понял! Спасибо, брат.</string>
+    <string name="novice_thanks">Теперь понял! Спасибо, {брат|сестра}.</string>
     <string name="novice_more">У него ещё вопрос</string>
     <string name="novice_done">Я спросил всё, что хотел. Ты хорошо объясняешь!</string>
     <string-array name="novice_questions">
@@ -206,7 +206,7 @@
         <item>На что это похоже? Что ещё устроено так же?</item>
         <item>А зачем мне это знать?</item>
         <item>Что из этого следует?</item>
-        <item>Как это связано с тем, что ты знал раньше?</item>
+        <item>Как это связано с тем, что ты {знал|знала} раньше?</item>
         <item>Какое здесь самое важное слово и почему?</item>
         <item>В чём тут обычно ошибаются?</item>
         <item>Как проверить, что это правда?</item>
@@ -228,16 +228,16 @@
     <string name="recall_hint">Что я помню…</string>
     <string name="cues_hint">Мои ответы… (или ответь в уме)</string>
     <string name="restore_compare">Сверить</string>
-    <string name="restore_in_head">Вспомнил в уме</string>
+    <string name="restore_in_head">{Вспомнил|Вспомнила} в уме</string>
     <string name="stake_title">Поставь свечи</string>
-    <string name="stake_hint">Пока не посмотрел: насколько ты уверен, что вспомнил верно?</string>
-    <string name="stake_1">Не уверен</string>
+    <string name="stake_hint">Пока не {посмотрел|посмотрела}: насколько ты {уверен|уверена}, что {вспомнил|вспомнила} верно?</string>
+    <string name="stake_1">Не {уверен|уверена}</string>
     <string name="stake_2">Пожалуй</string>
-    <string name="stake_3">Уверен</string>
-    <string name="stake_3_note">Три свечи: если всё же забыл, страница попадёт в Книгу ошибок. Уверенные ошибки, исправленные, запоминаются крепче всего.</string>
-    <string name="coverage">Ты вспомнил %s страницы</string>
+    <string name="stake_3">{Уверен|Уверена}</string>
+    <string name="stake_3_note">Три свечи: если всё же {забыл|забыла}, страница попадёт в Книгу ошибок. Уверенные ошибки, исправленные, запоминаются крепче всего.</string>
+    <string name="coverage">Ты {вспомнил|вспомнила} %s страницы</string>
     <string name="grade_title">Как прошло?</string>
-    <string name="grade_again">Забыл</string>
+    <string name="grade_again">{Забыл|Забыла}</string>
     <string name="grade_hard">С трудом</string>
     <string name="grade_good">Помню</string>
     <string name="grade_easy">Легко</string>
@@ -278,7 +278,7 @@
     <string name="chronicle_empty">Летопись заполнится, когда начнёшь писать и восстанавливать.</string>
     <string name="stat_codices">рукописей</string>
     <string name="stat_pages">страниц</string>
-    <string name="stat_restored">восстановлений</string>
+    <string name="stat_restored">повторов</string>
     <string name="stat_days">дней подряд</string>
     <string name="ink_state">Чернила</string>
     <string name="ink_fresh">Свежие</string>
@@ -286,9 +286,9 @@
     <string name="ink_faint">Едва видны</string>
     <string name="ink_gilded">Позолочены</string>
     <string name="eye_title">Глаз переписчика</string>
-    <string name="eye_hint">Как часто ты оказывался прав, ставя одну, две или три свечи. Пунктир — там, где окажется верный глаз.</string>
+    <string name="eye_hint">Как часто ты {оказывался прав|оказывалась права}, ставя одну, две или три свечи. Пунктир — там, где окажется верный глаз.</string>
     <string name="eye_empty">Поставь свечи на несколько восстановлений — и здесь появится твой глаз.</string>
-    <string name="eye_oversure">Ты увереннее, чем прав. Ставь три свечи, только если смог бы объяснить послушнику.</string>
+    <string name="eye_oversure">Ты увереннее, чем {прав|права}. Ставь три свечи, только если {смог|смогла} бы объяснить послушнику.</string>
     <string name="eye_undersure">Ты знаешь больше, чем думаешь. Доверяй себе чуть больше.</string>
     <string name="eye_true">Глаз верный: ты знаешь, что знаешь.</string>
     <plurals name="eye_count">
@@ -331,7 +331,7 @@
 
     <!-- Welcome -->
     <string name="welcome_1_title">Скрипторий для того, что ты узнал</string>
-    <string name="welcome_1_text">После книги, лекции или видео запиши своими словами, что понял. Уже одно это оставляет в памяти гораздо больше.</string>
+    <string name="welcome_1_text">После книги, лекции или видео запиши своими словами, что {понял|поняла}. Уже одно это оставляет в памяти гораздо больше.</string>
     <string name="welcome_2_title">Чернила выцветают, как память</string>
     <string name="welcome_2_text">Каждая страница выцветает по твоей собственной кривой забывания. Перепиши её по памяти — и чернила снова чёрные и держатся дольше.</string>
     <string name="welcome_ink_1">Интервалы лучше зубрёжки.</string>
@@ -340,4 +340,155 @@
     <string name="welcome_3_title">Страница расцветает по мере понимания</string>
     <string name="welcome_3_text">Ответь послушнику, найди примеры из жизни, поспорь с автором — и страница заслужит буквицу, вьюнок, сусальное золото и печать.</string>
     <string name="welcome_start">Начать первую рукопись</string>
+
+    <!-- Gender -->
+    <string name="set_gender">Обращаться ко мне</string>
+    <string name="gender_male">он</string>
+    <string name="gender_female">она</string>
+
+    <!-- Miniature -->
+    <string name="draw_undo">Отменить</string>
+    <string name="draw_clear">Стереть</string>
+    <string name="page_miniature">Миниатюра</string>
+    <string name="page_miniature_hint">Нарисуй пальцем: квадраты, стрелки, человечка. Картинка и слова — две дороги к одному воспоминанию.</string>
+    <string name="mode_miniature">миниатюра</string>
+    <string name="mode_palace">монастырь</string>
+    <string name="mode_exam">экзамен у аббата</string>
+    <string name="ask_miniature">Нарисуй миниатюру страницы по памяти, потом сверь.</string>
+    <string name="miniature_yours">Твоя</string>
+    <string name="miniature_original">На странице</string>
+
+    <!-- Disputation -->
+    <string name="gloss_dispute">Диспут</string>
+    <string name="dispute_title">Диспут</string>
+    <string name="dispute_intro">Как это делали схоласты: сформулируй тезис, приведи самые сильные возражения, как будто веришь в них, и ответь на каждое. Мысль, пережившая возражения, понята.</string>
+    <string name="dispute_thesis">Тезис</string>
+    <string name="dispute_thesis_hint">Представляется, что…</string>
+    <string name="dispute_objection">Возражение %d</string>
+    <string name="dispute_objection_hint">Но против этого…</string>
+    <string name="dispute_reply">Ответ</string>
+    <string name="dispute_reply_hint">Отвечаю: …</string>
+    <string name="dispute_save">Провести диспут</string>
+    <string name="dispute_thesis_short">Тезис: %s</string>
+    <string name="dispute_objection_n">Возражение %1$d: %2$s</string>
+    <string name="dispute_reply_short">Ответ: %s</string>
+
+    <!-- Threads -->
+    <string name="threads">Красные нити</string>
+    <string name="threads_hint">Свяжи эту страницу с другой — лучше из другой книги. Держатся те мысли, к которым ведут разные книги.</string>
+    <string name="thread_add">Протянуть нить</string>
+    <string name="thread_delete">Перерезать нить?</string>
+    <string name="thread_title">Красная нить</string>
+    <string name="thread_intro">От «%s» к…</string>
+    <string name="thread_search">Найти страницу</string>
+    <string name="thread_other_codices">Другие рукописи</string>
+    <string name="thread_same_codex">Эта рукопись</string>
+    <string name="thread_none">Пока не с чем связать.</string>
+    <string name="thread_note_title">Что их связывает?</string>
+    <string name="thread_note_hint">Обе о том, что… / Эта объясняет, почему та…</string>
+    <string name="thread_tie">Связать</string>
+    <string name="threads_map">Карта нитей</string>
+    <string name="threads_map_hint">Какие книги ведут друг к другу. Чем толще нить, тем больше связей.</string>
+
+    <!-- The monastery of memory -->
+    <string name="palace_title">Монастырь памяти</string>
+    <string name="palace_intro">Самый древний способ, ещё от греческих ораторов: разложи главные мысли по знакомым местам, каждую — яркой странной картинкой, и пройди по ним мысленно, чтобы найти снова.</string>
+    <string name="palace_place_hint">До трёх страниц в одном месте. Чем страннее картинка, тем крепче держится.</string>
+    <string name="palace_place_page">Положить сюда страницу</string>
+    <string name="palace_full">Здесь уже тесно. Выбери другое место.</string>
+    <string name="palace_pick">Какую страницу?</string>
+    <string name="palace_pick_none">У каждой страницы уже есть своё место.</string>
+    <string name="palace_image_title">Что ты видишь здесь — %s?</string>
+    <string name="palace_image_hint">Представь мысль чем-то странным, живым и большим прямо здесь. Подключи чувства: звук, запах, движение.</string>
+    <string name="palace_image_placeholder">Монах выливает чернила обратно в склянку, и они превращаются в…</string>
+    <string name="palace_set_down">Положить</string>
+    <string name="palace_remove">Убрать страницу из этого места?</string>
+    <string name="palace_walk">Пройтись по монастырю</string>
+    <plurals name="palace_count">
+        <item quantity="one">%d страница на своём месте</item>
+        <item quantity="few">%d страницы на своих местах</item>
+        <item quantity="many">%d страниц на своих местах</item>
+        <item quantity="other">%d страницы на своих местах</item>
+    </plurals>
+    <string name="placed_in">В монастыре: %s</string>
+    <string name="place_gate">Ворота</string>
+    <string name="place_refectory">Трапезная</string>
+    <string name="place_cell">Келья</string>
+    <string name="place_belltower">Колокольня</string>
+    <string name="place_chapel">Часовня</string>
+    <string name="place_crypt">Крипта</string>
+    <string name="place_scriptorium">Скрипторий</string>
+    <string name="place_library">Библиотека</string>
+    <string name="place_garden">Сад с колодцем</string>
+    <string name="walk_title">Прогулка</string>
+    <string name="walk_ask">Какую картинку ты {оставил|оставила} здесь и какую мысль она хранит?</string>
+    <string name="walk_look">Посмотреть</string>
+    <string name="walk_found">{Нашёл|Нашла}</string>
+    <string name="walk_lost">Не {нашёл|нашла}</string>
+    <plurals name="walk_left">
+        <item quantity="one">Осталось %d место</item>
+        <item quantity="few">Осталось %d места</item>
+        <item quantity="many">Осталось %d мест</item>
+        <item quantity="other">Осталось %d места</item>
+    </plurals>
+    <string name="walk_done">Найдено %1$d из %2$d</string>
+    <string name="walk_done_text">Места хранят то, что в них положено. Пройдись снова через несколько дней.</string>
+
+    <!-- The abbot's exam -->
+    <string name="exam_title">Экзамен у аббата</string>
+    <string name="exam_empty">Аббату нужны вопросы на полях хотя бы из двух рукописей.</string>
+    <string name="exam_progress">Вопрос %1$d из %2$d</string>
+    <string name="exam_asks">Аббат спрашивает</string>
+    <string name="exam_which">Из какой это рукописи?</string>
+    <string name="exam_answer">Ответ</string>
+    <string name="exam_answer_hint">Ответь в уме или вслух, потом посмотри.</string>
+    <string name="exam_show">Показать страницу</string>
+    <string name="exam_knew">{Знал|Знала}</string>
+    <string name="exam_didnt">Не {знал|знала}</string>
+    <string name="exam_result">Ответов: %1$d из %2$d</string>
+    <string name="exam_placed">Рукопись угадана %1$d раз из %2$d</string>
+    <string name="exam_verdict_high">Аббат кивает. Выученное держится вместе, и ты находишь его с любой стороны.</string>
+    <string name="exam_verdict_mid">Аббат доволен, но не вполне. Пропущенные страницы теперь раньше попадут в восстановление.</string>
+    <string name="exam_verdict_low">Аббат строг, но справедлив: вперемешку трудно, потому это и учит. Пропущенные страницы придвинуты ближе.</string>
+    <string name="exam_desk_first">Вопросы из всех рукописей вперемешку. Раз в месяц.</string>
+    <string name="exam_desk_again">В прошлый раз: %1$d из %2$d. Прошёл месяц.</string>
+    <string name="exam_last">Экзамен у аббата · в прошлый раз %1$d из %2$d</string>
+
+    <!-- Crafts -->
+    <string name="crafts_title">Ремёсла</string>
+    <string name="crafts_intro">Скрипторию учатся ремесло за ремеслом. Каждое открывается, пока ты пишешь и восстанавливаешь, и каждое — способ запоминать, работу которого показали исследования.</string>
+    <string name="crafts_open">Открыто ремёсел: %1$d из %2$d</string>
+    <string name="crafts_all">Все ремёсла</string>
+    <string name="craft_opened">Новое ремесло</string>
+    <string name="craft_ok">Понятно</string>
+    <string name="craft_ink">Чернила</string>
+    <string name="craft_ink_text">Пиши страницу своими словами по памяти и восстанавливай её, когда чернила выцветут.</string>
+    <string name="craft_ink_need">С самого начала</string>
+    <string name="craft_cinnabar">Киноварь</string>
+    <string name="craft_cinnabar_text">Вопросы на полях, золотая строка и колофон — по Корнеллу. Теперь восстановление может спрашивать по полям.</string>
+    <string name="craft_cinnabar_need">После первой страницы</string>
+    <string name="craft_novice">Послушник</string>
+    <string name="craft_novice_text">Объясни страницу просто мальчику, который ничего не знает. Где запинаешься, там понимание тонкое.</string>
+    <string name="craft_novice_need">После двух страниц</string>
+    <string name="craft_lacunae">Лакуны</string>
+    <string name="craft_lacunae_text">Мыши съедают слова со страниц, а ты заполняешь пробелы по памяти.</string>
+    <string name="craft_lacunae_need">После первого восстановления</string>
+    <string name="craft_margins">Поля</string>
+    <string name="craft_margins_text">Примеры из жизни, притчи, спор с автором и печать опыта.</string>
+    <string name="craft_margins_need">После трёх страниц</string>
+    <string name="craft_miniature">Миниатюра</string>
+    <string name="craft_miniature_text">Нарисуй мысль пальцем, а позже — снова по памяти. Слова и картинка вместе держатся крепче.</string>
+    <string name="craft_miniature_need">После пяти страниц</string>
+    <string name="craft_disputatio">Диспут</string>
+    <string name="craft_disputatio_text">Тезис, самые сильные возражения и ответ на каждое — как у схоластов.</string>
+    <string name="craft_disputatio_need">После пяти восстановлений</string>
+    <string name="craft_threads">Красные нити</string>
+    <string name="craft_threads_text">Связывай страницы разных книг и смотри на карту того, что ведёт к чему.</string>
+    <string name="craft_threads_need">Когда есть две рукописи и четыре страницы</string>
+    <string name="craft_exam">Экзамен у аббата</string>
+    <string name="craft_exam_text">Раз в месяц: вопросы из всех рукописей вперемешку. Сначала угадай книгу, потом ответь.</string>
+    <string name="craft_exam_need">Когда есть две рукописи и десять восстановлений</string>
+    <string name="craft_palace">Монастырь памяти</string>
+    <string name="craft_palace_text">Разложи главные мысли по местам монастыря и находи их снова на прогулке.</string>
+    <string name="craft_palace_need">После восьми страниц</string>
 </resources>

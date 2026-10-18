@@ -17,6 +17,7 @@ import app.scriptor.MainActivity
 import app.scriptor.R
 import app.scriptor.container
 import app.scriptor.domain.Rules
+import app.scriptor.domain.gendered
 import app.scriptor.localized
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -89,7 +90,7 @@ object Hours {
         val now = System.currentTimeMillis()
         val pages = c.db.dao().pages()
         val l = context.localized()
-        val (title, text) = when (hour) {
+        val (title, plain) = when (hour) {
             MATINS -> {
                 val n = Rules.yesterday(pages, LocalDate.now(), ZoneId.systemDefault()).size
                 if (n == 0) return
@@ -101,6 +102,7 @@ object Hours {
                 l.getString(R.string.compline) to l.resources.getQuantityString(R.plurals.compline_text, n, n, minOf(n, s.complineSize))
             }
         }
+        val text = gendered(plain, s.gender)
         val open = Intent(context, MainActivity::class.java)
             .setAction(OPEN).putExtra(EXTRA, hour)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)

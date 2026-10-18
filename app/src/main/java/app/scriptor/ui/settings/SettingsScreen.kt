@@ -20,8 +20,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.scriptor.BuildConfig
@@ -29,6 +30,7 @@ import app.scriptor.R
 import app.scriptor.container
 import app.scriptor.data.Backup
 import app.scriptor.data.Settings
+import app.scriptor.domain.Gender
 import app.scriptor.notify.Hours
 import app.scriptor.ui.Desk
 import app.scriptor.ui.Go
@@ -62,7 +64,7 @@ fun SettingsScreen(desk: Desk, go: Go) {
         c.scope.launch {
             val dao = c.db.dao()
             val ok = runCatching {
-                withContext(Dispatchers.IO) { Backup.write(context, uri, Backup.encode(dao.codices(), dao.pages(), dao.glosses(), dao.reviews())) }
+                withContext(Dispatchers.IO) { Backup.write(context, uri, Backup.encode(dao.codices(), dao.pages(), dao.glosses(), dao.reviews(), dao.threads(), dao.loci())) }
             }.isSuccess
             status = context.getString(if (ok) R.string.backup_done else R.string.backup_failed)
         }
@@ -105,6 +107,16 @@ fun SettingsScreen(desk: Desk, go: Go) {
                 Chip("English", cur == Language.EN, { Language.set(Language.EN) })
                 Chip("Русский", cur == Language.RU, { Language.set(Language.RU) })
             }
+            // Russian speaks to the scribe as "уверен" or "уверена"; English has no need to ask.
+            if (LocalConfiguration.current.locales[0].language == "ru") {
+                Spacer(Modifier.height(14.dp))
+                Text(stringResource(R.string.set_gender), style = UType.Body)
+                Spacer(Modifier.height(6.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Chip(stringResource(R.string.gender_male), s.gender == Gender.MALE, { set { it.copy(gender = Gender.MALE) } })
+                    Chip(stringResource(R.string.gender_female), s.gender == Gender.FEMALE, { set { it.copy(gender = Gender.FEMALE) } })
+                }
+            }
         }
 
         Rubric(stringResource(R.string.set_backup))
@@ -133,7 +145,7 @@ fun SettingsScreen(desk: Desk, go: Go) {
                     val ok = runCatching {
                         withContext(Dispatchers.IO) {
                             val b = Backup.read(context, uri)
-                            c.db.dao().replaceAll(b.codices, b.pages, b.glosses, b.reviews)
+                            c.db.dao().replaceAll(b.codices, b.pages, b.glosses, b.reviews, b.threads, b.loci)
                         }
                     }.isSuccess
                     if (ok) c.settings.update { it.copy(onboarded = true) }

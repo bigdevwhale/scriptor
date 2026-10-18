@@ -28,16 +28,22 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalConfiguration
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.scriptor.R
+import app.scriptor.domain.Gender
+import app.scriptor.ui.LocalGender
+import app.scriptor.ui.components.Chip
 import app.scriptor.ui.art.Initial
 import app.scriptor.ui.art.Quill
 import app.scriptor.ui.art.Seal
@@ -51,43 +57,56 @@ import app.scriptor.ui.theme.UType
 
 /** Three leaves: the scriptorium, the fading ink, the page that blooms. */
 @Composable
-fun OnboardingScreen(onDone: () -> Unit) {
+fun OnboardingScreen(onDone: (Gender) -> Unit) {
     var step by rememberSaveable { mutableIntStateOf(0) }
-    Column(Modifier.fillMaxSize().parchment(U.c.bg).statusBarsPadding().navigationBarsPadding().padding(horizontal = 24.dp)) {
-        Spacer(Modifier.height(24.dp))
-        Text(stringResource(R.string.app_name).uppercase(), style = UType.Eyebrow, modifier = Modifier.align(Alignment.CenterHorizontally))
-        Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-            AnimatedContent(step, transitionSpec = { fadeIn(tween(300)) togetherWith fadeOut(tween(200)) }, label = "leaf") { s ->
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(Modifier.height(200.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        when (s) {
-                            0 -> Quill(Modifier.size(150.dp))
-                            1 -> FadingInk()
-                            else -> Bloom()
+    var gender by rememberSaveable { mutableStateOf(Gender.MALE) }
+    val russian = LocalConfiguration.current.locales[0].language == "ru"
+    CompositionLocalProvider(LocalGender provides gender) {
+        Column(Modifier.fillMaxSize().parchment(U.c.bg).statusBarsPadding().navigationBarsPadding().padding(horizontal = 24.dp)) {
+            Spacer(Modifier.height(24.dp))
+            Text(stringResource(R.string.app_name).uppercase(), style = UType.Eyebrow, modifier = Modifier.align(Alignment.CenterHorizontally))
+            Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                AnimatedContent(step, transitionSpec = { fadeIn(tween(300)) togetherWith fadeOut(tween(200)) }, label = "leaf") { s ->
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Box(Modifier.height(200.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
+                            when (s) {
+                                0 -> Quill(Modifier.size(150.dp))
+                                1 -> FadingInk()
+                                else -> Bloom()
+                            }
+                        }
+                        Spacer(Modifier.height(24.dp))
+                        Text(
+                            stringResource(listOf(R.string.welcome_1_title, R.string.welcome_2_title, R.string.welcome_3_title)[s]),
+                            style = UType.Display, textAlign = TextAlign.Center,
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        Text(
+                            stringResource(listOf(R.string.welcome_1_text, R.string.welcome_2_text, R.string.welcome_3_text)[s]),
+                            style = UType.Sub.copy(textAlign = TextAlign.Center),
+                        )
+                        if (s == 0 && russian) {
+                            Spacer(Modifier.height(18.dp))
+                            Text(stringResource(R.string.set_gender), style = UType.Muted)
+                            Spacer(Modifier.height(6.dp))
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Chip(stringResource(R.string.gender_male), gender == Gender.MALE, { gender = Gender.MALE }, color = U.c.cinnabar)
+                                Chip(stringResource(R.string.gender_female), gender == Gender.FEMALE, { gender = Gender.FEMALE }, color = U.c.cinnabar)
+                            }
                         }
                     }
-                    Spacer(Modifier.height(24.dp))
-                    Text(
-                        stringResource(listOf(R.string.welcome_1_title, R.string.welcome_2_title, R.string.welcome_3_title)[s]),
-                        style = UType.Display, textAlign = TextAlign.Center,
-                    )
-                    Spacer(Modifier.height(12.dp))
-                    Text(
-                        stringResource(listOf(R.string.welcome_1_text, R.string.welcome_2_text, R.string.welcome_3_text)[s]),
-                        style = UType.Sub.copy(textAlign = TextAlign.Center),
-                    )
                 }
             }
+            Row(Modifier.align(Alignment.CenterHorizontally), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                repeat(3) { i -> Box(Modifier.size(8.dp).clip(CircleShape).background(if (i == step) U.c.cinnabar else U.c.line)) }
+            }
+            Spacer(Modifier.height(18.dp))
+            PrimaryButton(
+                stringResource(if (step < 2) R.string.next else R.string.welcome_start),
+                { if (step < 2) step++ else onDone(gender) }, Modifier.fillMaxWidth(), color = U.c.cinnabar,
+            )
+            Spacer(Modifier.height(20.dp))
         }
-        Row(Modifier.align(Alignment.CenterHorizontally), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            repeat(3) { i -> Box(Modifier.size(8.dp).clip(CircleShape).background(if (i == step) U.c.cinnabar else U.c.line)) }
-        }
-        Spacer(Modifier.height(18.dp))
-        PrimaryButton(
-            stringResource(if (step < 2) R.string.next else R.string.welcome_start),
-            { if (step < 2) step++ else onDone() }, Modifier.fillMaxWidth(), color = U.c.cinnabar,
-        )
-        Spacer(Modifier.height(20.dp))
     }
 }
 

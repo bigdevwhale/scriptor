@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.unit.dp
 import app.scriptor.R
 import app.scriptor.container

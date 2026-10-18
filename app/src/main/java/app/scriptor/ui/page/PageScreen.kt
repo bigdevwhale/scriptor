@@ -36,7 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +46,11 @@ import app.scriptor.data.Gloss
 import app.scriptor.data.GlossKind
 import app.scriptor.data.Mode
 import app.scriptor.data.Page
+import app.scriptor.data.Thread
+import app.scriptor.domain.Craft
+import app.scriptor.domain.Dispute
+import app.scriptor.domain.Place
+import app.scriptor.ui.components.Miniature
 import app.scriptor.domain.Illumination
 import app.scriptor.domain.Memory
 import app.scriptor.ui.Desk
@@ -110,17 +115,20 @@ fun PageScreen(id: Long, desk: Desk, go: Go) {
 
         Spacer(Modifier.height(16.dp))
         PrimaryButton(stringResource(R.string.restore_page), { go.restore(Source.page(id)) }, Modifier.fillMaxWidth(), icon = Icons.Rounded.Replay)
-        Spacer(Modifier.height(8.dp))
-        SoftButton(stringResource(R.string.explain_novice), { go.novice(id) }, Modifier.fillMaxWidth(), color = U.c.verdigris, soft = U.c.verdigrisSoft)
+        if (desk.has(Craft.NOVICE)) {
+            Spacer(Modifier.height(8.dp))
+            SoftButton(stringResource(R.string.explain_novice), { go.novice(id) }, Modifier.fillMaxWidth(), color = U.c.verdigris, soft = U.c.verdigrisSoft)
+        }
 
-        Rubric(stringResource(R.string.margins))
-        Text(stringResource(R.string.margins_hint), style = UType.Muted)
-        Spacer(Modifier.height(10.dp))
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf(GlossKind.EXEMPLUM, GlossKind.PARABLE, GlossKind.DISSENT, GlossKind.SEAL).forEach { k ->
-                Box(
-                    Modifier.clip(U.RSm).background(U.c.surface).border(1.dp, U.c.line, U.RSm).clickable { adding = k }.padding(horizontal = 12.dp, vertical = 8.dp),
-                ) { Text("+ " + T.gloss(c, k), style = UType.Body.copy(fontSize = 14.sp, color = glossColor(k))) }
+        if (desk.has(Craft.MARGINS) || desk.has(Craft.DISPUTATIO)) {
+            Rubric(stringResource(R.string.margins))
+            Text(stringResource(R.string.margins_hint), style = UType.Muted)
+            Spacer(Modifier.height(10.dp))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (desk.has(Craft.MARGINS)) listOf(GlossKind.EXEMPLUM, GlossKind.PARABLE, GlossKind.DISSENT, GlossKind.SEAL).forEach { k ->
+                    MarginChip(T.gloss(c, k), glossColor(k)) { adding = k }
+                }
+                if (desk.has(Craft.DISPUTATIO)) MarginChip(T.gloss(c, GlossKind.DISPUTE), glossColor(GlossKind.DISPUTE)) { go.dispute(id) }
             }
         }
         GlossKind.entries.forEach { k ->
@@ -130,6 +138,27 @@ fun PageScreen(id: Long, desk: Desk, go: Go) {
                 Text(T.gloss(c, k), style = UType.Rubric.copy(color = glossColor(k)))
                 list.forEach { GlossItem(it) }
             }
+        }
+
+        if (desk.has(Craft.THREADS)) {
+            Rubric(stringResource(R.string.threads))
+            val threads = desk.threadsOf(id)
+            if (threads.isEmpty()) Text(stringResource(R.string.threads_hint), style = UType.Muted)
+            threads.forEach { t ->
+                val other = desk.page(t.other(id)) ?: return@forEach
+                ThreadRow(t, other, desk, onOpen = { go.page(other.id) })
+            }
+            Spacer(Modifier.height(8.dp))
+            SoftButton(stringResource(R.string.thread_add), { go.thread(id) }, Modifier.fillMaxWidth(), color = U.c.cinnabar, soft = U.c.cinnabarSoft)
+        }
+
+        val placed = desk.loci.filter { it.pageId == id }
+        if (placed.isNotEmpty()) {
+            Spacer(Modifier.height(14.dp))
+            Text(
+                stringResource(R.string.placed_in, placed.joinToString { T.place(c, Place.of(it.place)) }),
+                style = UType.Italic, modifier = Modifier.clickable { go.palace() },
+            )
         }
 
         val history = desk.reviewsOf(id)
@@ -227,6 +256,10 @@ fun Spread(p: Page, ill: Illumination, recall: Double, inkOverride: androidx.com
                         modifier = Modifier.fillMaxWidth().clip(U.RSm).background(c.goldSoft.copy(alpha = 0.55f)).border(1.dp, c.gold.copy(alpha = 0.6f), U.RSm).padding(12.dp),
                     )
                 }
+                if (p.miniature.isNotBlank()) {
+                    Spacer(Modifier.height(14.dp))
+                    Miniature(p.miniature, Modifier.fillMaxWidth(0.72f).align(Alignment.CenterHorizontally), ink = ink)
+                }
                 if (p.colophon.isNotBlank()) {
                     Spacer(Modifier.height(14.dp))
                     Fleuron(Modifier.align(Alignment.CenterHorizontally).width(120.dp).height(12.dp))
@@ -250,8 +283,18 @@ private fun GlossItem(g: Gloss) {
     var confirm by remember { mutableStateOf(false) }
     Row(Modifier.fillMaxWidth().padding(top = 6.dp), verticalAlignment = Alignment.Top) {
         Column(Modifier.weight(1f)) {
-            if (g.prompt.isNotBlank()) Text("— " + g.prompt, style = UType.Italic.copy(fontSize = 15.sp))
-            Text(g.text, style = UType.Script.copy(fontSize = 17.sp, lineHeight = 23.sp))
+            if (g.kindOf == GlossKind.DISPUTE) {
+                val d = Dispute.decode(g.prompt, g.text)
+                Text(stringResource(R.string.dispute_thesis_short, d.thesis), style = UType.Script.copy(fontSize = 17.sp, lineHeight = 23.sp))
+                d.points.forEachIndexed { i, (o, r) ->
+                    Spacer(Modifier.height(4.dp))
+                    Text(stringResource(R.string.dispute_objection_n, i + 1, o), style = UType.Italic.copy(fontSize = 15.sp, lineHeight = 20.sp))
+                    Text(stringResource(R.string.dispute_reply_short, r), style = UType.Script.copy(fontSize = 16.sp, lineHeight = 21.sp))
+                }
+            } else {
+                if (g.prompt.isNotBlank()) Text("— " + g.prompt, style = UType.Italic.copy(fontSize = 15.sp))
+                Text(g.text, style = UType.Script.copy(fontSize = 17.sp, lineHeight = 23.sp))
+            }
         }
         IconButton(onClick = { confirm = true }, modifier = Modifier.size(32.dp)) { Icon(Icons.Rounded.Close, stringResource(R.string.delete), tint = U.c.faint, modifier = Modifier.size(16.dp)) }
     }
@@ -267,8 +310,38 @@ private fun GlossItem(g: Gloss) {
 fun glossColor(k: GlossKind) = when (k) {
     GlossKind.NOVICE, GlossKind.EXEMPLUM -> U.c.verdigris
     GlossKind.PARABLE -> U.c.lapis
-    GlossKind.DISSENT -> U.c.ink
+    GlossKind.DISSENT, GlossKind.DISPUTE -> U.c.ink
     GlossKind.SEAL -> U.c.wax
+}
+
+@Composable
+private fun MarginChip(label: String, color: androidx.compose.ui.graphics.Color, onClick: () -> Unit) {
+    Box(
+        Modifier.clip(U.RSm).background(U.c.surface).border(1.dp, U.c.line, U.RSm).clickable(onClick = onClick).padding(horizontal = 12.dp, vertical = 8.dp),
+    ) { Text("+ $label", style = UType.Body.copy(fontSize = 14.sp, color = color)) }
+}
+
+/** A red thread to another page: where it leads and what ties the two. */
+@Composable
+private fun ThreadRow(t: Thread, other: Page, desk: Desk, onOpen: () -> Unit) {
+    val c = ctx()
+    var confirm by remember { mutableStateOf(false) }
+    Row(Modifier.fillMaxWidth().clickable(onClick = onOpen).padding(vertical = 8.dp), verticalAlignment = Alignment.Top) {
+        Box(Modifier.padding(top = 9.dp).size(width = 18.dp, height = 2.dp).background(U.c.cinnabar))
+        Spacer(Modifier.width(10.dp))
+        Column(Modifier.weight(1f)) {
+            desk.codex(other.codexId)?.let { Text(it.title, style = UType.Small) }
+            Text(other.title, style = UType.Name.copy(fontSize = 17.sp))
+            if (t.note.isNotBlank()) Text(t.note, style = UType.Italic.copy(fontSize = 15.sp, lineHeight = 20.sp))
+        }
+        IconButton(onClick = { confirm = true }, modifier = Modifier.size(32.dp)) { Icon(Icons.Rounded.Close, stringResource(R.string.delete), tint = U.c.faint, modifier = Modifier.size(16.dp)) }
+    }
+    if (confirm) {
+        ConfirmDialog(
+            stringResource(R.string.thread_delete), other.title, stringResource(R.string.delete),
+            onConfirm = { c.container.write { db.dao().delete(t) } }, onDismiss = { confirm = false }, danger = true,
+        )
+    }
 }
 
 @Composable
@@ -288,7 +361,7 @@ private fun GlossDialog(kind: GlossKind, onDismiss: () -> Unit, onSave: (String)
                             GlossKind.PARABLE -> R.string.parable_hint
                             GlossKind.DISSENT -> R.string.dissent_hint
                             GlossKind.SEAL -> R.string.seal_hint
-                            GlossKind.NOVICE -> R.string.novice_answer_hint
+                            GlossKind.NOVICE, GlossKind.DISPUTE -> R.string.novice_answer_hint
                         }
                     ),
                     style = UType.Muted,

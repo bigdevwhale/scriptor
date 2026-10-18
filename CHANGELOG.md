@@ -9,4 +9,5 @@
 - The novice who asks for plain explanations; examples, parables, disputes and the seal of practice on the margins.
 - Illumination earned page by page: initial, rubrics, vines, gold leaf, seal.
 - Matins and Compline bells, closing a codex in one sentence and three words, the library, the chronicle, backup to one JSON file.
-- English and Russian.
+- The second wave of crafts, opening as you go: miniatures drawn by hand and redrawn from memory, the disputation, red threads between books with their map, the abbot's monthly exam of mixed questions, and the monastery of memory with its walk.
+- English and Russian; Russian addresses you as he or she.

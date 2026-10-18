@@ -1,7 +1,11 @@
 package app.scriptor.ui.library
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -19,6 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Church
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +36,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +45,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.scriptor.R
+import app.scriptor.domain.Craft
+import app.scriptor.ui.components.IconDisc
+import app.scriptor.ui.components.Leaf
+import app.scriptor.ui.pluralStringResource
 import app.scriptor.data.Codex
 import app.scriptor.ui.Desk
 import app.scriptor.ui.Go
@@ -71,11 +80,30 @@ fun LibraryTab(desk: Desk, go: Go) {
             PrimaryButton(stringResource(R.string.new_codex), go::newCodex, Modifier.fillMaxWidth(), icon = Icons.Rounded.Add)
             return@Column
         }
+        if (desk.has(Craft.PALACE)) {
+            Spacer(Modifier.height(14.dp))
+            Leaf(onClick = go::palace) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconDisc(Icons.Rounded.Church, 44.dp, U.c.vellum, U.c.leather)
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.palace_title), style = UType.Name)
+                        Text(pluralStringResource(R.plurals.palace_count, desk.loci.size, desk.loci.size), style = UType.Muted)
+                    }
+                }
+            }
+        }
         Rubric(stringResource(R.string.library_open))
         Shelf(desk.open, desk, go)
         if (desk.closed.isNotEmpty()) {
             Rubric(stringResource(R.string.library_closed))
             Shelf(desk.closed, desk, go)
+        }
+        if (desk.has(Craft.THREADS) && desk.threads.isNotEmpty()) {
+            Rubric(stringResource(R.string.threads_map))
+            Text(stringResource(R.string.threads_map_hint), style = UType.Muted)
+            Spacer(Modifier.height(8.dp))
+            ThreadMap(desk, go)
         }
         Spacer(Modifier.height(16.dp))
         SoftButton(stringResource(R.string.new_codex), go::newCodex, Modifier.fillMaxWidth(), icon = Icons.Rounded.Add)
@@ -173,4 +201,66 @@ private fun Spine(cx: Codex, desk: Desk, width: Dp, onClick: () -> Unit) {
 private fun Modifier.vertical(length: Dp) = layout { m, c ->
     val p = m.measure(Constraints(maxWidth = length.roundToPx(), maxHeight = c.maxWidth))
     layout(p.height, p.width) { p.place(-(p.width - p.height) / 2, (p.width - p.height) / 2) }
+}
+
+/**
+ * Codices round a circle, and the red threads between their pages drawn across it: thicker where
+ * two books are tied by more threads. Tap a codex to open it.
+ */
+@Composable
+private fun ThreadMap(desk: Desk, go: Go) {
+    val c = U.c
+    val pageCodex = desk.pages.associate { it.id to it.codexId }
+    val ties = desk.threads.mapNotNull { t ->
+        val a = pageCodex[t.fromPage] ?: return@mapNotNull null
+        val b = pageCodex[t.toPage] ?: return@mapNotNull null
+        if (a == b) null else if (a < b) a to b else b to a
+    }.groupingBy { it }.eachCount()
+    val nodes = desk.codices.filter { cx -> ties.keys.any { it.first == cx.id || it.second == cx.id } }
+    if (nodes.isEmpty()) return
+    BoxWithConstraints(Modifier.fillMaxWidth().height(300.dp).clip(U.RMd).parchment(c.vellum, edge = 0.06f)) {
+        val w = constraints.maxWidth.toFloat()
+        val h = constraints.maxHeight.toFloat()
+        val r = minOf(w, h) * 0.34f
+        val centre = Offset(w / 2, h / 2)
+        val at = nodes.mapIndexed { i, cx ->
+            val a = -Math.PI / 2 + i * 2 * Math.PI / nodes.size
+            cx.id to Offset(centre.x + (r * kotlin.math.cos(a)).toFloat(), centre.y + (r * kotlin.math.sin(a)).toFloat())
+        }.toMap()
+        Canvas(Modifier.fillMaxSize()) {
+            ties.forEach { (pair, n) ->
+                val p0 = at[pair.first] ?: return@forEach
+                val p1 = at[pair.second] ?: return@forEach
+                val mid = Offset((p0.x + p1.x) / 2, (p0.y + p1.y) / 2)
+                // Bow each thread a little toward the centre, as a thread hangs.
+                val ctrl = Offset(mid.x + (centre.x - mid.x) * 0.5f, mid.y + (centre.y - mid.y) * 0.5f)
+                val path = androidx.compose.ui.graphics.Path().apply {
+                    moveTo(p0.x, p0.y)
+                    quadraticTo(ctrl.x, ctrl.y, p1.x, p1.y)
+                }
+                drawPath(path, c.cinnabar.copy(alpha = 0.75f), style = androidx.compose.ui.graphics.drawscope.Stroke((1.5f + n * 1.2f).dp.toPx(), cap = androidx.compose.ui.graphics.StrokeCap.Round))
+            }
+        }
+        val density = androidx.compose.ui.platform.LocalDensity.current
+        nodes.forEach { cx ->
+            val p = at.getValue(cx.id)
+            val boxW = 96.dp
+            with(density) {
+                Column(
+                    Modifier
+                        .offset(x = p.x.toDp() - boxW / 2, y = p.y.toDp() - 15.dp)
+                        .width(boxW)
+                        .clickable { go.codex(cx.id) },
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Box(Modifier.size(width = 22.dp, height = 30.dp).clip(U.RSm).background(leather(cx.binding)).border(1.dp, c.gold, U.RSm))
+                    Spacer(Modifier.height(3.dp))
+                    Text(
+                        cx.title, style = UType.Small.copy(color = c.ink, textAlign = androidx.compose.ui.text.style.TextAlign.Center),
+                        maxLines = 2, overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+        }
+    }
 }

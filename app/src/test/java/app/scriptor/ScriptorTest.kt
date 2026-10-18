@@ -6,7 +6,16 @@ import app.scriptor.data.Gloss
 import app.scriptor.data.GlossKind
 import app.scriptor.data.Mode
 import app.scriptor.data.Page
+import app.scriptor.data.Locus
 import app.scriptor.data.Review
+import app.scriptor.data.Thread
+import app.scriptor.domain.Craft
+import app.scriptor.domain.Dispute
+import app.scriptor.domain.Gender
+import app.scriptor.domain.Place
+import app.scriptor.domain.Progress
+import app.scriptor.domain.Strokes
+import app.scriptor.domain.gendered
 import app.scriptor.domain.Grade
 import app.scriptor.domain.Memory
 import app.scriptor.domain.Rules
@@ -135,10 +144,63 @@ class ScriptorTest {
         val pg = listOf(Page(id = 2, codexId = 1, title = "t", body = "b", cues = "c", stability = 3.5, difficulty = 4.0, reviewedAt = 7, createdAt = 6, erratum = true))
         val gl = listOf(Gloss(id = 3, pageId = 2, kind = GlossKind.NOVICE.name, prompt = "why", text = "because", createdAt = 8))
         val rv = listOf(Review(id = 4, pageId = 2, at = 9, mode = Mode.CUES.name, confidence = 2, grade = 3, coverage = 0.5f, attempt = "a"))
-        val back = Backup.decode(Backup.encode(cx, pg, gl, rv))
+        val th = listOf(Thread(id = 5, fromPage = 2, toPage = 2, note = "n", createdAt = 1))
+        val lo = listOf(Locus(id = 6, place = Place.CRYPT.name, pageId = 2, image = "img", createdAt = 2))
+        val back = Backup.decode(Backup.encode(cx, pg.map { it.copy(miniature = "0.100,0.200 0.300,0.400") }, gl, rv, th, lo))
+        assertEquals(th, back.threads)
+        assertEquals(lo, back.loci)
+        assertEquals("0.100,0.200 0.300,0.400", back.pages[0].miniature)
         assertEquals(cx, back.codices)
-        assertEquals(pg, back.pages)
+        assertEquals(pg, back.pages.map { it.copy(miniature = "") })
         assertEquals(gl, back.glosses)
         assertEquals(rv, back.reviews)
+    }
+
+    @Test
+    fun genderMarksResolve() {
+        val t = "Ты {уверен|уверена}, что {вспомнил|вспомнила}? Где ты {видел|видела} это сам{|а}?"
+        assertEquals("Ты уверен, что вспомнил? Где ты видел это сам?", gendered(t, Gender.MALE))
+        assertEquals("Ты уверена, что вспомнила? Где ты видела это сама?", gendered(t, Gender.FEMALE))
+        assertEquals("plain | text", gendered("plain | text", Gender.FEMALE))
+    }
+
+    @Test
+    fun strokesRoundTrip() {
+        val s = listOf(listOf(0.1f to 0.2f, 0.3f to 0.4f), listOf(0.5f to 0.5f))
+        assertEquals(s, Strokes.decode(Strokes.encode(s)))
+        assertTrue(Strokes.decode("").isEmpty())
+    }
+
+    @Test
+    fun disputeRoundTrips() {
+        val d = Dispute("t", listOf("o1" to "r1", "o2" to "r2"))
+        assertEquals(d, Dispute.decode("t", d.encode()))
+    }
+
+    @Test
+    fun examMixesCodices() {
+        fun page(id: Long, codex: Long) = Page(id = id, codexId = codex, title = "p$id", body = "b", cues = "q$id?", stability = 1.0, difficulty = 5.0, reviewedAt = 0, createdAt = 0)
+        val pages = (1L..6L).map { page(it, if (it <= 3) 1 else 2) } + page(7, 3).copy(cues = "")
+        val exam = Rules.exam(pages, n = 6, seed = 1)
+        assertEquals(6, exam.size)
+        exam.zipWithNext().forEach { (a, b) -> assertTrue(a.page.codexId != b.page.codexId) }
+        exam.forEach { assertTrue(it.page.codexId in it.options) }
+        assertTrue(Rules.exam(pages.filter { it.codexId == 1L }).isEmpty())
+    }
+
+    @Test
+    fun craftsOpenWithProgress() {
+        assertEquals(setOf(Craft.INK), Craft.open(Progress(0, 0, 0)))
+        val some = Craft.open(Progress(pages = 3, reviews = 1, codices = 1))
+        assertTrue(Craft.MARGINS in some && Craft.LACUNAE in some && Craft.MINIATURE !in some && Craft.THREADS !in some)
+        assertEquals(Craft.entries.toSet(), Craft.open(Progress(10, 10, 2)))
+    }
+
+    @Test
+    fun lockedCraftsLeaveModesOut() {
+        val p = Page(id = 1, codexId = 1, title = "t", body = "b", cues = "q?", miniature = "0.1,0.1 0.2,0.2", stability = 1.0, difficulty = 5.0, reviewedAt = 0, createdAt = 0)
+        val r = { n: Int -> List(n) { Review(pageId = 1, at = 0, mode = "", grade = 3) } }
+        assertEquals(listOf(Mode.RECALL, Mode.RECALL), (0..1).map { Rules.mode(p, r(it), setOf(Craft.INK)) })
+        assertEquals(Mode.MINIATURE, Rules.mode(p, r(3)))
     }
 }

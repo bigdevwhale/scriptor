@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Bedtime
+import androidx.compose.material.icons.rounded.Quiz
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.WbTwilight
 import androidx.compose.material3.Icon
@@ -25,12 +26,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.pluralStringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.scriptor.R
+import app.scriptor.container
+import app.scriptor.domain.Craft
+import app.scriptor.ui.components.IconDisc
 import app.scriptor.ui.Desk
 import app.scriptor.ui.Go
 import app.scriptor.ui.Source
@@ -67,6 +71,11 @@ fun DeskTab(desk: Desk, go: Go) {
             return@Column
         }
 
+        desk.newCraft?.let { k ->
+            Spacer(Modifier.height(14.dp))
+            NewCraft(k, desk, go)
+        }
+
         Spacer(Modifier.height(14.dp))
         Candles(desk, go)
 
@@ -89,6 +98,24 @@ fun DeskTab(desk: Desk, go: Go) {
             Leaf(onClick = go::errata) {
                 Text(stringResource(R.string.errata_title), style = UType.Name.copy(color = U.c.cinnabar))
                 Text(pluralStringResource(R.plurals.errata_text, desk.errata.size, desk.errata.size), style = UType.Muted)
+            }
+        }
+
+        if (desk.examDue) {
+            Spacer(Modifier.height(12.dp))
+            Leaf(onClick = go::exam) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.Quiz, null, tint = U.c.lapis, modifier = Modifier.size(26.dp))
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(R.string.exam_title), style = UType.Name)
+                        Text(
+                            if (desk.settings.examScore < 0) stringResource(R.string.exam_desk_first)
+                            else stringResource(R.string.exam_desk_again, desk.settings.examScore, desk.settings.examOf),
+                            style = UType.Muted,
+                        )
+                    }
+                }
             }
         }
 
@@ -157,6 +184,32 @@ private fun Candles(desk: Desk, go: Go) {
                     icon = Icons.Rounded.Bedtime,
                 )
             }
+        }
+    }
+}
+
+/** A craft has just opened: what it is, once, until the scribe has read it. */
+@Composable
+private fun NewCraft(k: Craft, desk: Desk, go: Go) {
+    val c = ctx()
+    val (name, text, _) = T.craftIds(k)
+    Leaf {
+        Row(verticalAlignment = Alignment.Top) {
+            IconDisc(T.craftIcon(k), 44.dp, U.c.vellum, U.c.cinnabar)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.craft_opened).uppercase(), style = UType.Eyebrow)
+                Text(stringResource(name), style = UType.Name)
+                Spacer(Modifier.height(2.dp))
+                Text(stringResource(text), style = UType.Muted)
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            SoftButton(stringResource(R.string.craft_ok), {
+                c.container.write { settings.update { it.copy(crafts = it.crafts + k.name) } }
+            }, Modifier.weight(1f), color = U.c.cinnabar, soft = U.c.cinnabarSoft)
+            SoftButton(stringResource(R.string.crafts_all), go::crafts, Modifier.weight(1f), color = U.c.muted, soft = U.c.surface2)
         }
     }
 }

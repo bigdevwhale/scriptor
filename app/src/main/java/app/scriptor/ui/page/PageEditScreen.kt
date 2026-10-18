@@ -13,15 +13,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.scriptor.R
 import app.scriptor.container
 import app.scriptor.data.Page
+import app.scriptor.domain.Craft
 import app.scriptor.ui.Desk
 import app.scriptor.ui.Go
 import app.scriptor.ui.T
+import app.scriptor.ui.components.DrawPad
 import app.scriptor.ui.components.Leaf
 import app.scriptor.ui.components.PrimaryButton
 import app.scriptor.ui.components.Rubric
@@ -55,6 +57,10 @@ fun PageEditScreen(codexId: Long, pageId: Long, desk: Desk, go: Go) {
     var cues by remember { mutableStateOf(existing?.cues.orEmpty()) }
     var gold by remember { mutableStateOf(existing?.gold.orEmpty()) }
     var colophon by remember { mutableStateOf(existing?.colophon.orEmpty()) }
+    var miniature by remember { mutableStateOf(existing?.miniature.orEmpty()) }
+    // The margin and the miniature are crafts that open later; what was written with them stays editable.
+    val cinnabar = desk.has(Craft.CINNABAR) || cues.isNotBlank() || gold.isNotBlank() || colophon.isNotBlank()
+    val drawing = desk.has(Craft.MINIATURE) || miniature.isNotBlank()
     var borrowed by remember { mutableStateOf(false) }
 
     fun onBody(new: String) {
@@ -85,7 +91,7 @@ fun PageEditScreen(codexId: Long, pageId: Long, desk: Desk, go: Go) {
                             val id = container.scribe.addPage(
                                 Page(
                                     codexId = codex.id, title = title.trim(), locator = locator.trim(), body = body.trim(), quote = quote.trim(),
-                                    cues = clean(cues), gold = gold.trim(), colophon = colophon.trim(),
+                                    cues = clean(cues), gold = gold.trim(), colophon = colophon.trim(), miniature = miniature,
                                     stability = 0.0, difficulty = 0.0, reviewedAt = 0L, createdAt = 0L,
                                 )
                             )
@@ -94,7 +100,7 @@ fun PageEditScreen(codexId: Long, pageId: Long, desk: Desk, go: Go) {
                             container.db.dao().update(
                                 existing.copy(
                                     title = title.trim(), locator = locator.trim(), body = body.trim(), quote = quote.trim(),
-                                    cues = clean(cues), gold = gold.trim(), colophon = colophon.trim(), updatedAt = System.currentTimeMillis(),
+                                    cues = clean(cues), gold = gold.trim(), colophon = colophon.trim(), miniature = miniature, updatedAt = System.currentTimeMillis(),
                                 )
                             )
                             go.back()
@@ -132,20 +138,29 @@ fun PageEditScreen(codexId: Long, pageId: Long, desk: Desk, go: Go) {
             Leaf { ScriptField(quote, { quote = it }, stringResource(R.string.page_quote_hint), style = UType.Italic.copy(color = U.c.faint), minLines = 2) }
         }
 
-        Rubric(stringResource(R.string.page_cues))
-        Text(stringResource(R.string.page_cues_hint), style = UType.Muted)
-        Spacer(Modifier.height(8.dp))
-        Leaf { ScriptField(cues, { cues = it }, stringResource(R.string.page_cues_placeholder), style = UType.Rubric.copy(fontSize = 18.sp, lineHeight = 26.sp), minLines = 2) }
+        if (cinnabar) {
+            Rubric(stringResource(R.string.page_cues))
+            Text(stringResource(R.string.page_cues_hint), style = UType.Muted)
+            Spacer(Modifier.height(8.dp))
+            Leaf { ScriptField(cues, { cues = it }, stringResource(R.string.page_cues_placeholder), style = UType.Rubric.copy(fontSize = 18.sp, lineHeight = 26.sp), minLines = 2) }
 
-        Rubric(stringResource(R.string.page_gold))
-        Text(stringResource(R.string.page_gold_hint), style = UType.Muted)
-        Spacer(Modifier.height(8.dp))
-        Leaf { ScriptField(gold, { gold = it.take(200) }, stringResource(R.string.page_gold_placeholder), style = UType.Script.copy(color = U.c.goldDeep)) }
+            Rubric(stringResource(R.string.page_gold))
+            Text(stringResource(R.string.page_gold_hint), style = UType.Muted)
+            Spacer(Modifier.height(8.dp))
+            Leaf { ScriptField(gold, { gold = it.take(200) }, stringResource(R.string.page_gold_placeholder), style = UType.Script.copy(color = U.c.goldDeep)) }
 
-        Rubric(stringResource(R.string.page_colophon))
-        Text(stringResource(R.string.page_colophon_hint), style = UType.Muted)
-        Spacer(Modifier.height(8.dp))
-        Leaf { ScriptField(colophon, { colophon = it.take(400) }, stringResource(R.string.page_colophon_placeholder), minLines = 2) }
+            Rubric(stringResource(R.string.page_colophon))
+            Text(stringResource(R.string.page_colophon_hint), style = UType.Muted)
+            Spacer(Modifier.height(8.dp))
+            Leaf { ScriptField(colophon, { colophon = it.take(400) }, stringResource(R.string.page_colophon_placeholder), minLines = 2) }
+        }
+
+        if (drawing) {
+            Rubric(stringResource(R.string.page_miniature))
+            Text(stringResource(R.string.page_miniature_hint), style = UType.Muted)
+            Spacer(Modifier.height(8.dp))
+            DrawPad(miniature, { miniature = it })
+        }
     }
 }
 

@@ -37,8 +37,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.pluralStringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp

@@ -319,4 +319,151 @@
     <string name="welcome_3_title">The page blooms as you understand</string>
     <string name="welcome_3_text">Answer the novice, find examples from your life, argue with the author: the page earns an initial, vines, gold leaf and a seal.</string>
     <string name="welcome_start">Begin the first codex</string>
+
+    <!-- Gender (Russian only needs it) -->
+    <string name="set_gender">Address me as</string>
+    <string name="gender_male">he</string>
+    <string name="gender_female">she</string>
+
+    <!-- Miniature -->
+    <string name="draw_undo">Undo</string>
+    <string name="draw_clear">Clear</string>
+    <string name="page_miniature">Miniature</string>
+    <string name="page_miniature_hint">Draw it with a finger: boxes, arrows, a little figure. A picture and words are two roads to one memory.</string>
+    <string name="mode_miniature">the miniature</string>
+    <string name="mode_palace">the monastery</string>
+    <string name="mode_exam">the abbot\'s exam</string>
+    <string name="ask_miniature">Draw the page\'s miniature from memory, then compare.</string>
+    <string name="miniature_yours">Yours</string>
+    <string name="miniature_original">On the page</string>
+
+    <!-- Disputation -->
+    <string name="gloss_dispute">Disputation</string>
+    <string name="dispute_title">Disputation</string>
+    <string name="dispute_intro">As the schoolmen did it: state the thesis, give the strongest objections you can find, as if you believed them, then answer each one. An idea that has survived its objections is understood.</string>
+    <string name="dispute_thesis">Thesis</string>
+    <string name="dispute_thesis_hint">It seems that…</string>
+    <string name="dispute_objection">Objection %d</string>
+    <string name="dispute_objection_hint">But against this…</string>
+    <string name="dispute_reply">Reply</string>
+    <string name="dispute_reply_hint">I answer that…</string>
+    <string name="dispute_save">Hold the disputation</string>
+    <string name="dispute_thesis_short">Thesis: %s</string>
+    <string name="dispute_objection_n">Objection %1$d: %2$s</string>
+    <string name="dispute_reply_short">Reply: %s</string>
+
+    <!-- Threads -->
+    <string name="threads">Red threads</string>
+    <string name="threads_hint">Tie this page to another, from a different book if you can. Ideas that other books lead back to are the ones that last.</string>
+    <string name="thread_add">Tie a thread</string>
+    <string name="thread_delete">Cut the thread?</string>
+    <string name="thread_title">A red thread</string>
+    <string name="thread_intro">From “%s” to…</string>
+    <string name="thread_search">Find a page</string>
+    <string name="thread_other_codices">Other codices</string>
+    <string name="thread_same_codex">This codex</string>
+    <string name="thread_none">No other pages to tie to yet.</string>
+    <string name="thread_note_title">What ties them?</string>
+    <string name="thread_note_hint">Both are about… / This one explains why that one…</string>
+    <string name="thread_tie">Tie</string>
+    <string name="threads_map">Map of threads</string>
+    <string name="threads_map_hint">Which books lead to which. The thicker the thread, the more ties.</string>
+
+    <!-- The monastery of memory -->
+    <string name="palace_title">Monastery of memory</string>
+    <string name="palace_intro">The oldest method of all, from the Greek orators: set your key ideas down in places you know, each as a vivid, odd picture, and walk through them in your mind to find them again.</string>
+    <string name="palace_place_hint">Up to three pages in a place. The stranger the picture, the better it holds.</string>
+    <string name="palace_place_page">Set a page down here</string>
+    <string name="palace_full">This place is full. Choose another.</string>
+    <string name="palace_pick">Which page?</string>
+    <string name="palace_pick_none">Every page already has its place.</string>
+    <string name="palace_image_title">What do you see in the %s?</string>
+    <string name="palace_image_hint">Picture the idea as something odd, alive and large, right here. Use the senses: sound, smell, movement.</string>
+    <string name="palace_image_placeholder">A monk pours ink back into the bottle, and it turns into…</string>
+    <string name="palace_set_down">Set it down</string>
+    <string name="palace_remove">Take the page out of this place?</string>
+    <string name="palace_walk">Walk through the monastery</string>
+    <plurals name="palace_count">
+        <item quantity="one">%d page set down in its place</item>
+        <item quantity="other">%d pages set down in their places</item>
+    </plurals>
+    <string name="placed_in">In the monastery: %s</string>
+    <string name="place_gate">Gate</string>
+    <string name="place_refectory">Refectory</string>
+    <string name="place_cell">Cell</string>
+    <string name="place_belltower">Bell tower</string>
+    <string name="place_chapel">Chapel</string>
+    <string name="place_crypt">Crypt</string>
+    <string name="place_scriptorium">Scriptorium</string>
+    <string name="place_library">Library</string>
+    <string name="place_garden">Garden and well</string>
+    <string name="walk_title">The walk</string>
+    <string name="walk_ask">What picture did you leave here, and what idea does it hold?</string>
+    <string name="walk_look">Look</string>
+    <string name="walk_found">Found it</string>
+    <string name="walk_lost">Lost it</string>
+    <plurals name="walk_left">
+        <item quantity="one">%d place left</item>
+        <item quantity="other">%d places left</item>
+    </plurals>
+    <string name="walk_done">Found %1$d of %2$d</string>
+    <string name="walk_done_text">The places keep what you put in them. Walk again in a few days.</string>
+
+    <!-- The abbot's exam -->
+    <string name="exam_title">The abbot\'s exam</string>
+    <string name="exam_empty">The abbot needs margin questions from at least two codices.</string>
+    <string name="exam_progress">Question %1$d of %2$d</string>
+    <string name="exam_asks">The abbot asks</string>
+    <string name="exam_which">Which codex is it from?</string>
+    <string name="exam_answer">Answer</string>
+    <string name="exam_answer_hint">Answer in your head, or aloud, then look.</string>
+    <string name="exam_show">Show the page</string>
+    <string name="exam_knew">I knew it</string>
+    <string name="exam_didnt">I didn\'t</string>
+    <string name="exam_result">Answered %1$d of %2$d</string>
+    <string name="exam_placed">Told the codex right %1$d times of %2$d</string>
+    <string name="exam_verdict_high">The abbot nods. What you have learned holds together and you can find it from any side.</string>
+    <string name="exam_verdict_mid">The abbot is content, but not entirely. The pages you missed will come up in your restorations sooner now.</string>
+    <string name="exam_verdict_low">The abbot is stern but fair: mixing everything up is hard, and that is why it teaches. The missed pages are moved closer.</string>
+    <string name="exam_desk_first">Questions from every codex, all mixed together. Once a month.</string>
+    <string name="exam_desk_again">Last time: %1$d of %2$d. A month has passed.</string>
+    <string name="exam_last">The abbot\'s exam · last %1$d of %2$d</string>
+
+    <!-- Crafts -->
+    <string name="crafts_title">Crafts</string>
+    <string name="crafts_intro">A scriptorium is learned craft by craft. Each opens as you write and restore, and each is a way of remembering that research has shown to work.</string>
+    <string name="crafts_open">Crafts open: %1$d of %2$d</string>
+    <string name="crafts_all">All crafts</string>
+    <string name="craft_opened">A new craft</string>
+    <string name="craft_ok">Understood</string>
+    <string name="craft_ink">Ink</string>
+    <string name="craft_ink_text">Write a page in your own words from memory, and restore it when the ink fades.</string>
+    <string name="craft_ink_need">From the start</string>
+    <string name="craft_cinnabar">Cinnabar</string>
+    <string name="craft_cinnabar_text">Questions on the margin, the golden line and the colophon: the Cornell way. Restorations can now ask by the margin.</string>
+    <string name="craft_cinnabar_need">After the first page</string>
+    <string name="craft_novice">The novice</string>
+    <string name="craft_novice_text">Explain the page simply to a boy who knows nothing. Where you stumble, understanding is thin.</string>
+    <string name="craft_novice_need">After two pages</string>
+    <string name="craft_lacunae">Lacunae</string>
+    <string name="craft_lacunae_text">The mice eat words from your pages, and you fill the gaps from memory.</string>
+    <string name="craft_lacunae_need">After the first restoration</string>
+    <string name="craft_margins">The margins</string>
+    <string name="craft_margins_text">Examples from your life, parables, disputes with the author and the seal of practice.</string>
+    <string name="craft_margins_need">After three pages</string>
+    <string name="craft_miniature">Miniature</string>
+    <string name="craft_miniature_text">Draw the idea with a finger, and draw it again from memory later. Words and pictures together hold better.</string>
+    <string name="craft_miniature_need">After five pages</string>
+    <string name="craft_disputatio">Disputation</string>
+    <string name="craft_disputatio_text">Thesis, the strongest objections, and a reply to each, as the schoolmen did.</string>
+    <string name="craft_disputatio_need">After five restorations</string>
+    <string name="craft_threads">Red threads</string>
+    <string name="craft_threads_text">Tie pages of different books together, and see the map of what leads to what.</string>
+    <string name="craft_threads_need">With two codices and four pages</string>
+    <string name="craft_exam">The abbot\'s exam</string>
+    <string name="craft_exam_text">Once a month: questions from every codex mixed together. First tell which book, then answer.</string>
+    <string name="craft_exam_need">With two codices and ten restorations</string>
+    <string name="craft_palace">Monastery of memory</string>
+    <string name="craft_palace_text">Set your key ideas down in the places of a monastery and find them again on a walk.</string>
+    <string name="craft_palace_need">After eight pages</string>
 </resources>

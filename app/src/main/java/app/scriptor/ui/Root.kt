@@ -31,6 +31,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,7 +45,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -60,12 +60,24 @@ import app.scriptor.container
 import app.scriptor.data.Codex
 import app.scriptor.data.Gloss
 import app.scriptor.data.Page
+import app.scriptor.data.Locus
 import app.scriptor.data.Review
+import app.scriptor.data.Thread
 import app.scriptor.data.Settings
+import app.scriptor.domain.Craft
 import app.scriptor.domain.Illumination
+import app.scriptor.domain.Memory
+import app.scriptor.domain.Place
+import app.scriptor.domain.Progress
 import app.scriptor.domain.Rules
 import app.scriptor.notify.Hours
 import app.scriptor.ui.chronicle.ChronicleTab
+import app.scriptor.ui.crafts.CraftsScreen
+import app.scriptor.ui.exam.ExamScreen
+import app.scriptor.ui.page.DisputeScreen
+import app.scriptor.ui.page.ThreadScreen
+import app.scriptor.ui.palace.PalaceScreen
+import app.scriptor.ui.palace.WalkScreen
 import app.scriptor.ui.codex.CloseScreen
 import app.scriptor.ui.codex.CodexEditScreen
 import app.scriptor.ui.codex.CodexScreen
@@ -95,6 +107,8 @@ class Desk(
     val reviews: List<Review>,
     val settings: Settings,
     val now: Long,
+    val threads: List<Thread> = emptyList(),
+    val loci: List<Locus> = emptyList(),
 ) {
     val zone: ZoneId = ZoneId.systemDefault()
     val today: LocalDate = LocalDate.now(zone)
@@ -124,6 +138,15 @@ class Desk(
     val workedDays: Set<LocalDate> = (reviews.map { day(it.at) } + pages.map { day(it.createdAt) }).toSet()
     val streak: Int = Rules.streak(workedDays, today)
     val restoredToday: Int = reviews.count { day(it.at) == today }
+
+    val crafts: Set<Craft> = Craft.open(Progress(pages.size, reviews.size, codices.size))
+    fun has(c: Craft) = c in crafts
+    /** Opened but not yet announced on the desk. */
+    val newCraft: Craft? = Craft.entries.firstOrNull { it in crafts && it != Craft.INK && it.name !in settings.crafts }
+    fun threadsOf(pageId: Long): List<Thread> = threads.filter { it.fromPage == pageId || it.toPage == pageId }
+    fun lociOf(place: Place): List<Locus> = loci.filter { it.place == place.name }
+    /** The abbot's exam is due a month after the last, once it is open. */
+    val examDue: Boolean = has(Craft.EXAM) && now - settings.examAt > Rules.EXAM_EVERY_DAYS * Memory.DAY
 }
 
 /** Where a restoration's pages come from. */
@@ -147,6 +170,12 @@ class Go(private val nav: NavHostController) {
     fun novice(pageId: Long) = nav.navigate("novice/$pageId") { launchSingleTop = true }
     fun restore(source: String) = nav.navigate("restore/$source") { launchSingleTop = true }
     fun errata() = nav.navigate("errata") { launchSingleTop = true }
+    fun crafts() = nav.navigate("crafts") { launchSingleTop = true }
+    fun dispute(pageId: Long) = nav.navigate("dispute/$pageId") { launchSingleTop = true }
+    fun thread(pageId: Long) = nav.navigate("thread/$pageId") { launchSingleTop = true }
+    fun exam() = nav.navigate("exam") { launchSingleTop = true }
+    fun palace() = nav.navigate("palace") { launchSingleTop = true }
+    fun walk() = nav.navigate("walk") { launchSingleTop = true }
     fun settings() = nav.navigate("settings") { launchSingleTop = true }
     fun back() = nav.popBackStack()
 
@@ -171,9 +200,11 @@ fun ScriptorRoot(settings: Settings, hourRequest: Pair<String, Int>? = null) {
     val pages by dao.observePages().collectAsStateWithLifecycle(initialValue = null)
     val glosses by dao.observeGlosses().collectAsStateWithLifecycle(initialValue = null)
     val reviews by dao.observeReviews().collectAsStateWithLifecycle(initialValue = null)
+    val threads by dao.observeThreads().collectAsStateWithLifecycle(initialValue = null)
+    val loci by dao.observeLoci().collectAsStateWithLifecycle(initialValue = null)
     val tick = rememberNow(60_000)
-    val desk = remember(codices, pages, glosses, reviews, settings, tick) {
-        Desk(codices.orEmpty(), pages.orEmpty(), glosses.orEmpty(), reviews.orEmpty(), settings, System.currentTimeMillis())
+    val desk = remember(codices, pages, glosses, reviews, threads, loci, settings, tick) {
+        Desk(codices.orEmpty(), pages.orEmpty(), glosses.orEmpty(), reviews.orEmpty(), settings, System.currentTimeMillis(), threads.orEmpty(), loci.orEmpty())
     }
     val go = remember(nav) { Go(nav) }
 
@@ -201,49 +232,61 @@ fun ScriptorRoot(settings: Settings, hourRequest: Pair<String, Int>? = null) {
         }
     }
 
-    NavHost(
-        navController = nav,
-        startDestination = start,
-        modifier = Modifier.background(U.c.bg),
-        enterTransition = { fadeIn(tween(220)) },
-        exitTransition = { fadeOut(tween(160)) },
-        popEnterTransition = { fadeIn(tween(220)) },
-        popExitTransition = { fadeOut(tween(160)) },
-    ) {
-        composable("welcome") {
-            OnboardingScreen {
-                container.write { this.settings.update { it.copy(onboarded = true) } }
-                nav.navigate("main") { popUpTo("welcome") { inclusive = true } }
-                go.newCodex()
+    CompositionLocalProvider(LocalGender provides settings.gender) {
+        NavHost(
+            navController = nav,
+            startDestination = start,
+            modifier = Modifier.background(U.c.bg),
+            enterTransition = { fadeIn(tween(220)) },
+            exitTransition = { fadeOut(tween(160)) },
+            popEnterTransition = { fadeIn(tween(220)) },
+            popExitTransition = { fadeOut(tween(160)) },
+        ) {
+            composable("welcome") {
+                OnboardingScreen { gender ->
+                    container.write { this.settings.update { it.copy(onboarded = true, gender = gender) } }
+                    nav.navigate("main") { popUpTo("welcome") { inclusive = true } }
+                    go.newCodex()
+                }
             }
+            composable("main") { MainTabs(tab, { tab = it }, go, desk) }
+            composable("codex/new/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
+                CodexEditScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
+            }
+            composable("codex/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
+                CodexScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
+            }
+            composable("close/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
+                CloseScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
+            }
+            composable(
+                "write/{codex}/{page}",
+                arguments = listOf(navArgument("codex") { type = NavType.LongType }, navArgument("page") { type = NavType.LongType }),
+            ) { e ->
+                PageEditScreen(e.arguments?.getLong("codex") ?: 0L, e.arguments?.getLong("page") ?: 0L, desk, go)
+            }
+            composable("page/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
+                PageScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
+            }
+            composable("novice/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
+                NoviceScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
+            }
+            composable("restore/{source}", arguments = listOf(navArgument("source") { type = NavType.StringType })) { e ->
+                RestoreScreen(e.arguments?.getString("source").orEmpty(), desk, go)
+            }
+            composable("errata") { ErrataScreen(desk, go) }
+            composable("settings") { SettingsScreen(desk, go) }
+            composable("crafts") { CraftsScreen(desk, go) }
+            composable("dispute/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
+                DisputeScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
+            }
+            composable("thread/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
+                ThreadScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
+            }
+            composable("exam") { ExamScreen(desk, go) }
+            composable("palace") { PalaceScreen(desk, go) }
+            composable("walk") { WalkScreen(desk, go) }
         }
-        composable("main") { MainTabs(tab, { tab = it }, go, desk) }
-        composable("codex/new/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
-            CodexEditScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
-        }
-        composable("codex/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
-            CodexScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
-        }
-        composable("close/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
-            CloseScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
-        }
-        composable(
-            "write/{codex}/{page}",
-            arguments = listOf(navArgument("codex") { type = NavType.LongType }, navArgument("page") { type = NavType.LongType }),
-        ) { e ->
-            PageEditScreen(e.arguments?.getLong("codex") ?: 0L, e.arguments?.getLong("page") ?: 0L, desk, go)
-        }
-        composable("page/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
-            PageScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
-        }
-        composable("novice/{id}", arguments = listOf(navArgument("id") { type = NavType.LongType })) { e ->
-            NoviceScreen(e.arguments?.getLong("id") ?: 0L, desk, go)
-        }
-        composable("restore/{source}", arguments = listOf(navArgument("source") { type = NavType.StringType })) { e ->
-            RestoreScreen(e.arguments?.getString("source").orEmpty(), desk, go)
-        }
-        composable("errata") { ErrataScreen(desk, go) }
-        composable("settings") { SettingsScreen(desk, go) }
     }
 }
 

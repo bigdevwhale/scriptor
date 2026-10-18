@@ -22,10 +22,12 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.pluralStringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.unit.dp
 import app.scriptor.R
+import app.scriptor.domain.Craft
+import app.scriptor.ui.components.SoftButton
 import app.scriptor.domain.Rules
 import app.scriptor.ui.Desk
 import app.scriptor.ui.Go
@@ -54,6 +56,20 @@ fun ChronicleTab(desk: Desk, go: Go) {
                 Stat(desk.reviews.size.toString(), stringResource(R.string.stat_restored), Modifier.weight(1f))
                 Stat(desk.streak.toString(), stringResource(R.string.stat_days), Modifier.weight(1f), color = U.c.cinnabar)
             }
+        }
+
+        Spacer(Modifier.height(10.dp))
+        SoftButton(
+            stringResource(R.string.crafts_open, desk.crafts.size, Craft.entries.size), go::crafts, Modifier.fillMaxWidth(),
+            color = U.c.cinnabar, soft = U.c.cinnabarSoft,
+        )
+        if (desk.has(Craft.EXAM)) {
+            Spacer(Modifier.height(8.dp))
+            SoftButton(
+                if (desk.settings.examScore < 0) stringResource(R.string.exam_title)
+                else stringResource(R.string.exam_last, desk.settings.examScore, desk.settings.examOf),
+                go::exam, Modifier.fillMaxWidth(),
+            )
         }
 
         Rubric(stringResource(R.string.ink_state))

@@ -26,8 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
+import app.scriptor.ui.pluralStringResource
+import app.scriptor.ui.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -51,6 +51,8 @@ import app.scriptor.ui.art.Candle
 import app.scriptor.ui.art.Fleuron
 import app.scriptor.ui.art.Initial
 import app.scriptor.ui.components.Bar
+import app.scriptor.ui.components.DrawPad
+import app.scriptor.ui.components.Miniature
 import app.scriptor.ui.components.Leaf
 import app.scriptor.ui.components.PrimaryButton
 import app.scriptor.ui.components.Rubric
@@ -91,6 +93,7 @@ fun RestoreScreen(source: String, desk: Desk, go: Go) {
     var index by remember { mutableIntStateOf(0) }
     var step by remember { mutableStateOf(Step.ASK) }
     var attempt by remember { mutableStateOf("") }
+    var drawing by remember { mutableStateOf("") }
     var confidence by remember { mutableIntStateOf(0) }
     var busy by remember { mutableStateOf(false) }
     val results = remember { mutableStateListOf<Result>() }
@@ -115,7 +118,7 @@ fun RestoreScreen(source: String, desk: Desk, go: Go) {
         androidx.compose.runtime.LaunchedEffect(index) { index++ }
         return
     }
-    val mode = remember(index) { Rules.mode(page, desk.reviews) }
+    val mode = remember(index) { Rules.mode(page, desk.reviews, desk.crafts) }
     val lacunae = remember(index) { Words.lacunae(page.body, page.gold, every = 4, seed = page.id + page.reps) }
 
     Screen(title, go::back) {
@@ -161,6 +164,19 @@ fun RestoreScreen(source: String, desk: Desk, go: Go) {
                     else -> AnnotatedString(page.body)
                 }
                 Text(body, style = UType.Script)
+                if (mode == Mode.MINIATURE && page.miniature.isNotBlank()) {
+                    Spacer(Modifier.height(12.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Column(Modifier.weight(1f)) {
+                            Text(stringResource(R.string.miniature_yours), style = UType.Small)
+                            Miniature(drawing, Modifier.fillMaxWidth(), ink = U.c.lapis)
+                        }
+                        Column(Modifier.weight(1f)) {
+                            Text(stringResource(R.string.miniature_original), style = UType.Small)
+                            Miniature(page.miniature, Modifier.fillMaxWidth())
+                        }
+                    }
+                }
                 if (page.gold.isNotBlank()) {
                     Spacer(Modifier.height(10.dp))
                     Text(
@@ -185,11 +201,16 @@ fun RestoreScreen(source: String, desk: Desk, go: Go) {
                             Mode.RECALL -> R.string.ask_recall
                             Mode.CUES -> R.string.ask_cues
                             Mode.LACUNAE -> R.string.ask_lacunae
+                            Mode.MINIATURE -> R.string.ask_miniature
+                            else -> R.string.ask_recall
                         }
                     ),
                     style = UType.Italic,
                 )
-                if (mode != Mode.LACUNAE) {
+                if (mode == Mode.MINIATURE) {
+                    Spacer(Modifier.height(10.dp))
+                    DrawPad("", { drawing = it })
+                } else if (mode != Mode.LACUNAE) {
                     Spacer(Modifier.height(10.dp))
                     Leaf {
                         ScriptField(attempt, { attempt = it }, stringResource(if (mode == Mode.RECALL) R.string.recall_hint else R.string.cues_hint), minLines = if (mode == Mode.RECALL) 6 else 3)
@@ -199,7 +220,7 @@ fun RestoreScreen(source: String, desk: Desk, go: Go) {
                 }
                 Spacer(Modifier.height(14.dp))
                 PrimaryButton(
-                    stringResource(if (attempt.isNotBlank()) R.string.restore_compare else R.string.restore_in_head),
+                    stringResource(if (attempt.isNotBlank() || drawing.isNotBlank()) R.string.restore_compare else R.string.restore_in_head),
                     { step = Step.STAKE }, Modifier.fillMaxWidth(),
                 )
             }
@@ -251,6 +272,7 @@ fun RestoreScreen(source: String, desk: Desk, go: Go) {
                                         c.container.scribe.restore(page.id, mode, g, confidence, coverage, attempt.trim())
                                         results += Result(page, g, g == Grade.AGAIN && confidence == 3)
                                         attempt = ""
+                                        drawing = ""
                                         confidence = 0
                                         coverage = -1f
                                         step = Step.ASK

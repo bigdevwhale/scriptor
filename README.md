@@ -50,6 +50,13 @@ Most of what we read or watch is gone within a week. What keeps it is not reread
 | 🔔 | Sleep consolidation | **Compline**: a few fading pages before sleep. **Matins**: yesterday's pages recalled in the morning |
 | 🗜️ | Summarising | Closing a codex: one sentence, then three words tooled on the spine |
 | 🔏 | Transfer | The seal of practice: what you did with it |
+| 🎨 | Dual coding | **Miniatures** drawn with a finger, and drawn again from memory |
+| ⚖️ | Disputatio, steelmanning | Thesis, the strongest objections, a reply to each |
+| 🧵 | Connecting ideas | **Red threads** between pages of different books, and their map |
+| 🎓 | Interleaved testing | **The abbot's exam** once a month: mixed questions from every codex, first tell which book |
+| 🏛️ | Method of loci | **The monastery of memory**: ideas set down in its places as vivid pictures, found again on a walk |
+
+New techniques arrive as **crafts** that open as you go, so a new scribe starts with ink alone. Russian addresses you as he or she, your choice.
 
 ## Privacy
 

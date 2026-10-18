@@ -1,6 +1,8 @@
 package app.scriptor.data
 
 import android.content.Context
+import androidx.room.AutoMigration
+import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
@@ -32,6 +34,8 @@ enum class GlossKind {
     DISSENT,
     /** The idea was put to use: what happened. */
     SEAL,
+    /** A scholastic disputation: the thesis in [Gloss.prompt], objections and replies in [Gloss.text] (see [app.scriptor.domain.Dispute]). */
+    DISPUTE,
 }
 
 @Entity(tableName = "codices")
@@ -85,6 +89,8 @@ data class Page(
     val colophon: String = "",
     /** Borrowed ink: the author's words, kept apart from the scribe's. */
     val quote: String = "",
+    /** A miniature drawn by hand: strokes in [app.scriptor.domain.Strokes] form, or empty. */
+    @ColumnInfo(defaultValue = "") val miniature: String = "",
     val stability: Double,
     val difficulty: Double,
     val reviewedAt: Long,
@@ -127,7 +133,37 @@ enum class Mode {
     LACUNAE,
     /** Only the margin questions showing. */
     CUES,
+    /** The miniature drawn again from memory. */
+    MINIATURE,
+    /** A walk through the monastery of memory. */
+    PALACE,
+    /** A question at the abbot's exam. */
+    EXAM,
 }
+
+/** A red thread between two pages, usually of different codices, and what ties them. */
+@Entity(tableName = "threads", indices = [Index("fromPage"), Index("toPage")])
+data class Thread(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val fromPage: Long,
+    val toPage: Long,
+    val note: String = "",
+    val createdAt: Long,
+) {
+    fun other(pageId: Long) = if (fromPage == pageId) toPage else fromPage
+}
+
+/** A page set down in a place of the monastery of memory, with the image that keeps it there. */
+@Entity(tableName = "loci", indices = [Index("pageId")])
+data class Locus(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    /** [app.scriptor.domain.Place] name. */
+    val place: String,
+    val pageId: Long,
+    /** What is seen there: a vivid, odd picture that stands for the idea. */
+    val image: String,
+    val createdAt: Long,
+)
 
 @Entity(tableName = "reviews", indices = [Index("pageId")])
 data class Review(
@@ -152,11 +188,15 @@ abstract class ScriptorDao {
     @Query("SELECT * FROM pages ORDER BY createdAt ASC") abstract fun observePages(): Flow<List<Page>>
     @Query("SELECT * FROM glosses ORDER BY createdAt ASC") abstract fun observeGlosses(): Flow<List<Gloss>>
     @Query("SELECT * FROM reviews ORDER BY at ASC") abstract fun observeReviews(): Flow<List<Review>>
+    @Query("SELECT * FROM threads ORDER BY createdAt ASC") abstract fun observeThreads(): Flow<List<Thread>>
+    @Query("SELECT * FROM loci ORDER BY createdAt ASC") abstract fun observeLoci(): Flow<List<Locus>>
 
     @Query("SELECT * FROM codices") abstract suspend fun codices(): List<Codex>
     @Query("SELECT * FROM pages") abstract suspend fun pages(): List<Page>
     @Query("SELECT * FROM glosses") abstract suspend fun glosses(): List<Gloss>
     @Query("SELECT * FROM reviews") abstract suspend fun reviews(): List<Review>
+    @Query("SELECT * FROM threads") abstract suspend fun threads(): List<Thread>
+    @Query("SELECT * FROM loci") abstract suspend fun loci(): List<Locus>
 
     @Query("SELECT * FROM pages WHERE id = :id") abstract suspend fun page(id: Long): Page?
     @Query("SELECT * FROM codices WHERE id = :id") abstract suspend fun codex(id: Long): Codex?
@@ -175,6 +215,15 @@ abstract class ScriptorDao {
 
     @Insert abstract suspend fun insert(r: Review): Long
 
+    @Insert abstract suspend fun insert(t: Thread): Long
+    @Delete abstract suspend fun delete(t: Thread)
+
+    @Insert abstract suspend fun insert(l: Locus): Long
+    @Delete abstract suspend fun delete(l: Locus)
+
+    @Query("DELETE FROM threads WHERE fromPage = :pageId OR toPage = :pageId") abstract suspend fun deleteThreadsOf(pageId: Long)
+    @Query("DELETE FROM loci WHERE pageId = :pageId") abstract suspend fun deleteLociOf(pageId: Long)
+
     @Query("DELETE FROM glosses WHERE pageId = :pageId") abstract suspend fun deleteGlossesOf(pageId: Long)
     @Query("DELETE FROM reviews WHERE pageId = :pageId") abstract suspend fun deleteReviewsOf(pageId: Long)
 
@@ -182,6 +231,8 @@ abstract class ScriptorDao {
     open suspend fun deletePage(p: Page) {
         deleteGlossesOf(p.id)
         deleteReviewsOf(p.id)
+        deleteThreadsOf(p.id)
+        deleteLociOf(p.id)
         delete(p)
     }
 
@@ -197,13 +248,22 @@ abstract class ScriptorDao {
     @Query("DELETE FROM pages") protected abstract suspend fun clearPages()
     @Query("DELETE FROM glosses") protected abstract suspend fun clearGlosses()
     @Query("DELETE FROM reviews") protected abstract suspend fun clearReviews()
+    @Query("DELETE FROM threads") protected abstract suspend fun clearThreads()
+    @Query("DELETE FROM loci") protected abstract suspend fun clearLoci()
+    @Insert protected abstract suspend fun insertThreads(l: List<Thread>)
+    @Insert protected abstract suspend fun insertLoci(l: List<Locus>)
     @Insert protected abstract suspend fun insertCodices(l: List<Codex>)
     @Insert protected abstract suspend fun insertPages(l: List<Page>)
     @Insert protected abstract suspend fun insertGlosses(l: List<Gloss>)
     @Insert protected abstract suspend fun insertReviews(l: List<Review>)
 
     @Transaction
-    open suspend fun replaceAll(codices: List<Codex>, pages: List<Page>, glosses: List<Gloss>, reviews: List<Review>) {
+    open suspend fun replaceAll(
+        codices: List<Codex>, pages: List<Page>, glosses: List<Gloss>, reviews: List<Review>,
+        threads: List<Thread> = emptyList(), loci: List<Locus> = emptyList(),
+    ) {
+        clearLoci()
+        clearThreads()
         clearReviews()
         clearGlosses()
         clearPages()
@@ -212,10 +272,17 @@ abstract class ScriptorDao {
         insertPages(pages)
         insertGlosses(glosses)
         insertReviews(reviews)
+        insertThreads(threads)
+        insertLoci(loci)
     }
 }
 
-@Database(entities = [Codex::class, Page::class, Gloss::class, Review::class], version = 1, exportSchema = true)
+@Database(
+    entities = [Codex::class, Page::class, Gloss::class, Review::class, Thread::class, Locus::class],
+    version = 2,
+    exportSchema = true,
+    autoMigrations = [AutoMigration(from = 1, to = 2)],
+)
 abstract class ScriptorDatabase : RoomDatabase() {
     abstract fun dao(): ScriptorDao
 

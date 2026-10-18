@@ -7,9 +7,12 @@ import org.json.JSONObject
 
 /** The whole scriptorium as one JSON file. Nothing leaves the phone unless the scribe exports it. */
 object Backup {
-    private const val VERSION = 1
+    private const val VERSION = 2
 
-    fun encode(codices: List<Codex>, pages: List<Page>, glosses: List<Gloss>, reviews: List<Review>): String = JSONObject()
+    fun encode(
+        codices: List<Codex>, pages: List<Page>, glosses: List<Gloss>, reviews: List<Review>,
+        threads: List<Thread> = emptyList(), loci: List<Locus> = emptyList(),
+    ): String = JSONObject()
         .put("app", "scriptor")
         .put("version", VERSION)
         .put("codices", JSONArray(codices.map {
@@ -19,7 +22,7 @@ object Backup {
         }))
         .put("pages", JSONArray(pages.map {
             JSONObject().put("id", it.id).put("codexId", it.codexId).put("title", it.title).put("locator", it.locator).put("body", it.body)
-                .put("cues", it.cues).put("gold", it.gold).put("colophon", it.colophon).put("quote", it.quote)
+                .put("cues", it.cues).put("gold", it.gold).put("colophon", it.colophon).put("quote", it.quote).put("miniature", it.miniature)
                 .put("stability", it.stability).put("difficulty", it.difficulty).put("reviewedAt", it.reviewedAt)
                 .put("reps", it.reps).put("lapses", it.lapses).put("erratum", it.erratum).put("createdAt", it.createdAt).put("updatedAt", it.updatedAt)
         }))
@@ -30,9 +33,18 @@ object Backup {
             JSONObject().put("id", it.id).put("pageId", it.pageId).put("at", it.at).put("mode", it.mode).put("confidence", it.confidence)
                 .put("grade", it.grade).put("coverage", it.coverage.toDouble()).put("attempt", it.attempt)
         }))
+        .put("threads", JSONArray(threads.map {
+            JSONObject().put("id", it.id).put("fromPage", it.fromPage).put("toPage", it.toPage).put("note", it.note).put("createdAt", it.createdAt)
+        }))
+        .put("loci", JSONArray(loci.map {
+            JSONObject().put("id", it.id).put("place", it.place).put("pageId", it.pageId).put("image", it.image).put("createdAt", it.createdAt)
+        }))
         .toString(2)
 
-    class Contents(val codices: List<Codex>, val pages: List<Page>, val glosses: List<Gloss>, val reviews: List<Review>)
+    class Contents(
+        val codices: List<Codex>, val pages: List<Page>, val glosses: List<Gloss>, val reviews: List<Review>,
+        val threads: List<Thread>, val loci: List<Locus>,
+    )
 
     /** Throws [IllegalArgumentException] when the text is not a Scriptor backup. */
     fun decode(text: String): Contents {
@@ -53,7 +65,7 @@ object Backup {
                 Page(
                     id = it.getLong("id"), codexId = it.getLong("codexId"), title = it.getString("title"), locator = it.optString("locator"),
                     body = it.getString("body"), cues = it.optString("cues"), gold = it.optString("gold"), colophon = it.optString("colophon"),
-                    quote = it.optString("quote"), stability = it.getDouble("stability"), difficulty = it.getDouble("difficulty"),
+                    quote = it.optString("quote"), miniature = it.optString("miniature"), stability = it.getDouble("stability"), difficulty = it.getDouble("difficulty"),
                     reviewedAt = it.getLong("reviewedAt"), reps = it.optInt("reps"), lapses = it.optInt("lapses"), erratum = it.optBoolean("erratum"),
                     createdAt = it.getLong("createdAt"), updatedAt = it.optLong("updatedAt", it.getLong("createdAt")),
                 )
@@ -66,6 +78,12 @@ object Backup {
                     id = it.getLong("id"), pageId = it.getLong("pageId"), at = it.getLong("at"), mode = it.optString("mode", Mode.RECALL.name),
                     confidence = it.optInt("confidence"), grade = it.getInt("grade"), coverage = it.optDouble("coverage", -1.0).toFloat(), attempt = it.optString("attempt"),
                 )
+            },
+            threads = list("threads").map {
+                Thread(id = it.getLong("id"), fromPage = it.getLong("fromPage"), toPage = it.getLong("toPage"), note = it.optString("note"), createdAt = it.getLong("createdAt"))
+            },
+            loci = list("loci").map {
+                Locus(id = it.getLong("id"), place = it.getString("place"), pageId = it.getLong("pageId"), image = it.optString("image"), createdAt = it.getLong("createdAt"))
             },
         )
     }
