@@ -36,6 +36,7 @@ import app.scriptor.ui.Desk
 import app.scriptor.ui.Go
 import app.scriptor.ui.Language
 import app.scriptor.ui.components.Chip
+import app.scriptor.ui.components.CommunityLinks
 import app.scriptor.ui.components.ConfirmDialog
 import app.scriptor.ui.components.InfoRow
 import app.scriptor.ui.components.Leaf
@@ -126,6 +127,8 @@ fun SettingsScreen(desk: Desk, go: Go) {
             InfoRow(Icons.Rounded.Download, stringResource(R.string.backup_import), stringResource(R.string.backup_import_hint), onClick = { import.launch(arrayOf("application/json", "text/plain", "application/octet-stream")) })
             status?.let { Text(it, style = UType.Muted.copy(color = U.c.lapis)) }
         }
+
+        CommunityLinks()
 
         Spacer(Modifier.height(24.dp))
         Text(stringResource(R.string.about, BuildConfig.VERSION_NAME), style = UType.Small.copy(textAlign = TextAlign.Center), modifier = Modifier.fillMaxWidth())
